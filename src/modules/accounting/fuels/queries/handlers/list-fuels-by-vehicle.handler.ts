@@ -1,15 +1,11 @@
 import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
-import { getFinalDateRange } from '@common/helper/get-date-params';
+import { FilterBuilder } from '@common/helper/filter.builder';
 import { ensureValidObjectId } from '@common/helper/object.id';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
-import {
-  PAGINATION_DEFAULT_PAGE,
-  PAGINATION_DEFAULT_PAGE_SIZE,
-} from '../../../../../common/constants/pagination.param';
 import { FuelDto } from '../../dto/fuel.dto';
 import { Fuel, FuelDocument } from '../../fuel.schema';
 import { ListFuelsByVehicleQuery } from '../list-fuels-by-vehicle.query';
@@ -29,21 +25,10 @@ export class ListFuelsByVehicleHandler implements IQueryHandler<ListFuelsByVehic
     ensureValidObjectId(query.vehicleId, 'Geçersiz araç ID');
     ensureValidObjectId(query.companyId, 'Geçersiz firma ID');
 
-    const {
-      pageNumber = PAGINATION_DEFAULT_PAGE,
-      pageSize = PAGINATION_DEFAULT_PAGE_SIZE,
-      search,
-      beginDate,
-      endDate,
-    } = query.query;
+    const { pageNumber, pageSize, search, beginDate, endDate } = query.query;
 
-    const validPageNumber = Math.max(1, Math.floor(pageNumber) || 1);
-    const validPageSize = Math.min(
-      ListFuelsByVehicleHandler.MAX_PAGE_SIZE,
-      Math.max(1, Math.floor(pageSize) || ListFuelsByVehicleHandler.DEFAULT_PAGE_SIZE)
-    );
-
-    const { beginDate: finalBeginDate, endDate: finalEndDate } = getFinalDateRange(beginDate, endDate);
+    const validPageNumber = FilterBuilder.validatePageNumber(pageNumber);
+    const validPageSize = FilterBuilder.validatePageSize(pageSize);
 
     const filter: any = {
       vehicleId: new Types.ObjectId(query.vehicleId),
@@ -58,11 +43,8 @@ export class ListFuelsByVehicleHandler implements IQueryHandler<ListFuelsByVehic
       ];
     }
 
-    if (finalBeginDate || finalEndDate) {
-      filter.operationDate = {};
-      if (finalBeginDate) filter.operationDate.$gte = new Date(finalBeginDate);
-      if (finalEndDate) filter.operationDate.$lte = new Date(finalEndDate);
-    }
+    // Add date range filter using FilterBuilder
+    FilterBuilder.addDateRangeFilter(filter, beginDate, endDate);
 
     const [totalCount, fuels] = await Promise.all([
       this.fuelModel.countDocuments(filter),

@@ -30,6 +30,9 @@ export class ListFuelsHandler implements IQueryHandler<ListFuelsQuery> {
       endDate,
     });
 
+    // Add date range filter using FilterBuilder
+    FilterBuilder.addDateRangeFilter(filter, beginDate, endDate);
+
     const pipeline: any[] = [
       { $match: filter },
       {

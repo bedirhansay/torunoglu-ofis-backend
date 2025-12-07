@@ -1,4 +1,5 @@
 import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
+import { FilterBuilder } from '@common/helper/filter.builder';
 import { ensureValidObjectId } from '@common/helper/object.id';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
@@ -28,11 +29,8 @@ export class ListPaymentsHandler implements IQueryHandler<ListPaymentsQuery> {
       filter.$or = [{ description: { $regex: search, $options: 'i' } }];
     }
 
-    if (beginDate || endDate) {
-      filter.operationDate = {};
-      if (beginDate) filter.operationDate.$gte = new Date(beginDate);
-      if (endDate) filter.operationDate.$lte = new Date(endDate);
-    }
+    // Add date range filter using FilterBuilder
+    FilterBuilder.addDateRangeFilter(filter, beginDate, endDate);
 
     const [totalCount, payments] = await Promise.all([
       this.paymentModel.countDocuments(filter),

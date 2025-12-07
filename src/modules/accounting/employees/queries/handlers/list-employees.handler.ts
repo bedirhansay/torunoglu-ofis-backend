@@ -1,3 +1,4 @@
+import { DEFAULT_API_PARAMS } from '@common/constants';
 import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
 import { FilterBuilder } from '@common/helper/filter.builder';
 import { Injectable } from '@nestjs/common';
@@ -5,10 +6,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
-import {
-  PAGINATION_DEFAULT_PAGE,
-  PAGINATION_DEFAULT_PAGE_SIZE,
-} from '../../../../../common/constants/pagination.param';
 import { EmployeeDto } from '../../dto/employee.dto';
 import { Employee, EmployeeDocument } from '../../employee.schema';
 import { ListEmployeesQuery } from '../list-employees.query';
@@ -22,7 +19,7 @@ export class ListEmployeesHandler implements IQueryHandler<ListEmployeesQuery> {
   ) {}
 
   async execute(query: ListEmployeesQuery): Promise<PaginatedResponseDto<EmployeeDto>> {
-    const { pageNumber = PAGINATION_DEFAULT_PAGE, pageSize = PAGINATION_DEFAULT_PAGE_SIZE, search } = query.query;
+    const { pageNumber = DEFAULT_API_PARAMS.pageNumber, pageSize = DEFAULT_API_PARAMS.pageSize, search } = query.query;
 
     const validPageNumber = FilterBuilder.validatePageNumber(pageNumber);
     const validPageSize = FilterBuilder.validatePageSize(pageSize);

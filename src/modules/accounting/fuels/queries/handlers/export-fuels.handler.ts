@@ -22,12 +22,8 @@ export class ExportFuelsHandler {
       endDate: query.query.endDate,
     });
 
-    if (query.query.beginDate || query.query.endDate) {
-      delete filter.operationDate;
-      filter.operationDate = {};
-      if (query.query.beginDate) filter.operationDate.$gte = new Date(query.query.beginDate);
-      if (query.query.endDate) filter.operationDate.$lte = new Date(query.query.endDate);
-    }
+    // Add date range filter using FilterBuilder
+    FilterBuilder.addDateRangeFilter(filter, query.query.beginDate, query.query.endDate);
 
     const pipeline: any[] = [
       { $match: filter },

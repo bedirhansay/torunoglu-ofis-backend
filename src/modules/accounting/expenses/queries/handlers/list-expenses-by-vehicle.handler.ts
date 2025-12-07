@@ -39,11 +39,8 @@ export class ListExpensesByVehicleHandler implements IQueryHandler<ListExpensesB
       ];
     }
 
-    if (beginDate || endDate) {
-      filter.operationDate = {};
-      if (beginDate) filter.operationDate.$gte = new Date(beginDate);
-      if (endDate) filter.operationDate.$lte = new Date(endDate);
-    }
+    // Add date range filter using FilterBuilder
+    FilterBuilder.addDateRangeFilter(filter, beginDate, endDate);
 
     const [totalCount, expenses] = await Promise.all([
       this.expenseModel.countDocuments(filter),

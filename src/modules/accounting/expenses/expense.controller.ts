@@ -178,7 +178,7 @@ export class ExpenseController {
   })
   async getExpensesByVehicle(
     @Param('vehicleId') vehicleId: string,
-    @Query() query: PaginatedSearchDTO,
+    @Query() query: PaginatedDateSearchDTO,
     @CurrentCompany() companyId: string
   ): Promise<PaginatedResponseDto<ExpenseDto>> {
     const listQuery = new ListExpensesByVehicleQuery(vehicleId, companyId, query);
@@ -209,7 +209,7 @@ export class ExpenseController {
   })
   async getExpensesByEmployee(
     @Param('employeeId') employeeId: string,
-    @Query() query: PaginatedSearchDTO,
+    @Query() query: PaginatedDateSearchDTO,
     @CurrentCompany() companyId: string
   ): Promise<PaginatedResponseDto<ExpenseDto>> {
     const listQuery = new ListExpensesByEmployeeQuery(employeeId, companyId, query);

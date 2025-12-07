@@ -9,7 +9,7 @@ export class EmployeeDto extends BaseDto {
   @Expose()
   fullName: string;
 
-  @ApiProperty({ example: '+90 532 123 45 67', description: 'Telefon numarası' })
+  @ApiPropertyOptional({ example: '+90 532 123 45 67', description: 'Telefon numarası' })
   @Expose()
   phone?: string;
 
@@ -17,7 +17,7 @@ export class EmployeeDto extends BaseDto {
   @Expose()
   departmentName: string;
 
-  @ApiProperty({ example: '2024-06-01T00:00:00.000Z', description: 'İşe giriş tarihi' })
+  @ApiPropertyOptional({ example: '2024-06-01T00:00:00.000Z', description: 'İşe giriş tarihi' })
   @Expose()
   hireDate?: string;
 
@@ -25,7 +25,7 @@ export class EmployeeDto extends BaseDto {
   @Expose()
   terminationDate?: string;
 
-  @ApiProperty({ example: 15000, description: 'Maaş (₺)' })
+  @ApiPropertyOptional({ example: 15000, description: 'Maaş (₺)' })
   @IsOptional()
   @Expose()
   salary?: number;

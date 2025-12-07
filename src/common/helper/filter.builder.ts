@@ -1,5 +1,5 @@
+import dayjs from 'dayjs';
 import { Types } from 'mongoose';
-import { getFinalDateRange } from './get-date-params';
 
 export interface BaseFilterParams {
   companyId: string;
@@ -22,13 +22,6 @@ export class FilterBuilder {
       companyId: new Types.ObjectId(params.companyId),
     };
 
-    const { beginDate: finalBeginDate, endDate: finalEndDate } = getFinalDateRange(params.beginDate, params.endDate);
-
-    // filter.operationDate = {
-    //   ...(finalBeginDate && { $gte: new Date(finalBeginDate) }),
-    //   ...(finalEndDate && { $lte: new Date(finalEndDate) }),
-    // };
-
     return filter;
   }
 
@@ -40,11 +33,36 @@ export class FilterBuilder {
     return Math.min(this.MAX_PAGE_SIZE, Math.max(1, Math.floor(pageSize ?? this.DEFAULT_PAGE_SIZE)));
   }
 
+  static addDateRangeFilter(
+    filter: Record<string, any>,
+    beginDate?: string | Date,
+    endDate?: string | Date,
+    dateField: string = 'operationDate'
+  ): void {
+    console.log('---addDateRangeFilter---beginDate, endDate', beginDate, endDate);
+    if (!beginDate && !endDate) return;
+
+    filter[dateField] = {};
+    if (beginDate) {
+      filter[dateField].$gte = dayjs(beginDate).startOf('day').toDate();
+    }
+    if (endDate) {
+      filter[dateField].$lte = dayjs(endDate).endOf('day').toDate();
+    }
+  }
+
   static buildIncomeFilter(params: IncomeFilterParams): Record<string, any> {
     const filter = this.buildBaseFilter(params);
 
+    // Add date range filter using centralized method
+    FilterBuilder.addDateRangeFilter(filter, params.beginDate, params.endDate);
+
     if (params.customerId) {
       filter.customerId = new Types.ObjectId(params.customerId);
+    }
+
+    if (params.isPaid !== undefined) {
+      filter.isPaid = params.isPaid;
     }
 
     return filter;
