@@ -1,0 +1,215 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiExtraModels,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
+
+import { CurrentCompany } from '@common/decorator/company.id';
+import {
+  ApiBaseResponse,
+  ApiCommandResponse,
+  ApiPaginatedResponse,
+  ApiSearchPaginatedQuery,
+} from '@common/decorator/swagger';
+import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
+import { BaseResponseDto } from '@common/dto/response/base.response.dto';
+import { CommandResponseDto } from '@common/dto/response/command-response.dto';
+import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
+import { CompanyGuard } from '@common/guards/company.id';
+
+import { CreateCategoryCommand } from './commands/create-category.command';
+import { DeleteCategoryCommand } from './commands/delete-category.command';
+import { UpdateCategoryCommand } from './commands/update-category.command';
+import { CategoryDto } from './dto/category.dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
+import { GetCategoryQuery } from './queries/get-category.query';
+import { ListCategoriesQuery } from './queries/list-categories.query';
+
+@ApiTags('Categories')
+@ApiExtraModels(
+  CommandResponseDto,
+  CategoryDto,
+  CreateCategoryDto,
+  UpdateCategoryDto,
+  PaginatedSearchDTO,
+  BaseResponseDto,
+  PaginatedResponseDto
+)
+@ApiBearerAuth('Bearer')
+@ApiSecurity('x-company-id')
+@UseGuards(CompanyGuard)
+@Controller('categories')
+export class CategoriesController {
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus
+  ) {}
+
+  @Get()
+  @ApiOperation({
+    summary: 'Tüm kategorileri listele',
+    description: 'Şirkete ait tüm kategorileri sayfalı olarak listeler. İsteğe bağlı arama desteği.',
+    operationId: 'getAllCategories',
+  })
+  @ApiSearchPaginatedQuery()
+  @ApiPaginatedResponse(CategoryDto)
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Geçersiz sorgu parametreleri',
+  })
+  async findAll(
+    @Query() query: PaginatedSearchDTO,
+    @CurrentCompany() companyId: string
+  ): Promise<PaginatedResponseDto<CategoryDto>> {
+    const listQuery = new ListCategoriesQuery(companyId, query.pageNumber, query.pageSize, query.search);
+    return this.queryBus.execute(listQuery);
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Yeni bir kategori oluşturur',
+    description: 'Şirkete ait yeni bir kategori oluşturur. Kategori adı benzersiz olmalıdır.',
+    operationId: 'createCategory',
+  })
+  @ApiBody({
+    type: CreateCategoryDto,
+    description: 'Oluşturulacak kategori bilgileri',
+  })
+  @ApiCommandResponse()
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Bu isimde bir kategori zaten mevcut',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Geçersiz kategori tipi',
+  })
+  async create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @CurrentCompany() companyId: string
+  ): Promise<CommandResponseDto> {
+    const command = new CreateCategoryCommand(
+      createCategoryDto.name,
+      createCategoryDto.type,
+      createCategoryDto.isActive ?? true,
+      companyId,
+      createCategoryDto.description
+    );
+    return this.commandBus.execute(command);
+  }
+
+  @Get(':id')
+  @ApiOperation({
+    summary: 'ID ile kategori getir',
+    description: "Belirtilen ID'ye sahip kategoriyi getirir.",
+    operationId: 'getCategoryById',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Kategori ID (MongoDB ObjectId)',
+    type: String,
+    example: '507f1f77bcf86cd799439011',
+  })
+  @ApiBaseResponse(CategoryDto)
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Kategori bulunamadı',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Geçersiz kategori ID',
+  })
+  async findOne(@Param('id') id: string, @CurrentCompany() companyId: string): Promise<BaseResponseDto<CategoryDto>> {
+    const query = new GetCategoryQuery(id, companyId);
+    return this.queryBus.execute(query);
+  }
+
+  @Patch(':id')
+  @ApiOperation({
+    summary: 'Kategori güncelle',
+    description: "Belirtilen ID'ye sahip kategoriyi günceller.",
+    operationId: 'updateCategory',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Güncellenecek kategori ID (MongoDB ObjectId)',
+    type: String,
+    example: '507f1f77bcf86cd799439011',
+  })
+  @ApiBody({
+    type: UpdateCategoryDto,
+    description: 'Güncellenecek kategori bilgileri (kısmi güncelleme)',
+  })
+  @ApiCommandResponse()
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Güncellenecek kategori bulunamadı',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Geçersiz kategori ID veya güncelleme verisi',
+  })
+  async update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+    @CurrentCompany() companyId: string
+  ): Promise<CommandResponseDto> {
+    const command = new UpdateCategoryCommand(
+      id,
+      companyId,
+      updateCategoryDto.name,
+      updateCategoryDto.description,
+      updateCategoryDto.type,
+      updateCategoryDto.isActive
+    );
+    return this.commandBus.execute(command);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: 'Kategori sil',
+    description: "Belirtilen ID'ye sahip kategoriyi siler. Bu işlem geri alınamaz.",
+    operationId: 'deleteCategory',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Silinecek kategori ID (MongoDB ObjectId)',
+    type: String,
+    example: '507f1f77bcf86cd799439011',
+  })
+  @ApiCommandResponse()
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Silinecek kategori bulunamadı',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Geçersiz kategori ID',
+  })
+  async remove(@Param('id') id: string, @CurrentCompany() companyId: string): Promise<CommandResponseDto> {
+    const command = new DeleteCategoryCommand(id, companyId);
+    return this.commandBus.execute(command);
+  }
+}

@@ -1,25 +1,27 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './common/guards/jwt';
-import { CorsMiddleware } from './middleware/cors';
-import { AuthModule } from './modules/auth/auth.module';
-import { CustomJwtModule } from './modules/auth/jwt-strategy';
-import { CategoriesModule } from './modules/categories/categories.module';
-import { CompaniesModule } from './modules/companies/companies.module';
-import { CustomersModule } from './modules/customers/customers.module';
-import { EmployeeModule } from './modules/employee/employee.module';
-import { ExpenseModule } from './modules/expense/expense.module';
-import { FuelModule } from './modules/fuel/fuel.module';
-import { IncomeModule } from './modules/income/income.module';
-import { LoggerModule } from './modules/logger/logger.module';
-import { PaymentsModule } from './modules/payments/payments.module';
-import { UsersModule } from './modules/users/users.module';
-import { VehiclesModule } from './modules/vehicles/vehicle.module';
-import { ReportsModule } from './modules/reports/reports.module';
+import configuration from './config/configuration';
+import { AuthModule } from './modules/core/auth/auth.module';
+import { CustomJwtModule } from './modules/core/auth/jwt-strategy';
+import { CategoriesModule } from './modules/accounting/categories/categories.module';
+import { CompaniesModule } from './modules/core/companies/companies.module';
+import { CustomersModule } from './modules/accounting/customers/customers.module';
+import { EmployeeModule } from './modules/accounting/employees/employee.module';
+import { ExpenseModule } from './modules/accounting/expense/expense.module';
+import { FuelModule } from './modules/accounting/fuel/fuel.module';
+import { IncomeModule } from './modules/accounting/income/income.module';
+import { LoggerModule } from './modules/core/logger/logger.module';
+import { PaymentsModule } from './modules/accounting/payments/payments.module';
+import { UsersModule } from './modules/core/users/users.module';
+import { VehiclesModule } from './modules/accounting/vehicles/vehicle.module';
+import { ReportsModule } from './modules/accounting/reports/reports.module';
+import { HealthModule } from './modules/health/health.module';
 
 
 @Module({
@@ -27,11 +29,24 @@ import { ReportsModule } from './modules/reports/reports.module';
     LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [configuration],
+    }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => [
+        {
+          ttl: config.get<number>('throttler.ttl') || 60000,
+          limit: config.get<number>('throttler.limit') || 100,
+        },
+      ],
     }),
     MongooseModule.forRootAsync({
-      useFactory: async () => ({
-        uri: process.env.MONGO_URI,
-        dbName: process.env.MONGO_DB,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        uri: config.get<string>('mongodb.uri'),
+        dbName: config.get<string>('mongodb.dbName'),
       }),
     }),
     CustomJwtModule,
@@ -48,6 +63,7 @@ import { ReportsModule } from './modules/reports/reports.module';
     IncomeModule,
     PaymentsModule,
     ReportsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -56,10 +72,10 @@ import { ReportsModule } from './modules/reports/reports.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CorsMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
