@@ -19,6 +19,6 @@ const QueryHandlers = [GetCompanyHandler, ListCompaniesHandler];
   ],
   controllers: [CompaniesController],
   providers: [...CommandHandlers, ...QueryHandlers],
-  exports: [],
+  exports: [MongooseModule.forFeature([{ name: Company.name, schema: CompanySchema }])],
 })
 export class CompaniesModule {}

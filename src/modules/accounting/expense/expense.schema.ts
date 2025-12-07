@@ -29,3 +29,12 @@ export class Expense {
 
 export const ExpenseSchema = SchemaFactory.createForClass(Expense);
 
+// Compound indexes for better query performance
+// En sık kullanılan query: companyId + operationDate (date range queries)
+ExpenseSchema.index({ companyId: 1, operationDate: -1 });
+// Category bazlı sorgular için
+ExpenseSchema.index({ companyId: 1, categoryId: 1, operationDate: -1 });
+// Related entity sorguları için
+ExpenseSchema.index({ companyId: 1, relatedToId: 1, relatedModel: 1 });
+// Created at index (pagination için)
+ExpenseSchema.index({ createdAt: -1 });

@@ -29,3 +29,15 @@ export class Income {
 }
 
 export const IncomeSchema = SchemaFactory.createForClass(Income);
+
+// Compound indexes for better query performance
+// En sık kullanılan query: companyId + operationDate (date range queries)
+IncomeSchema.index({ companyId: 1, operationDate: -1 });
+// Customer bazlı sorgular için
+IncomeSchema.index({ companyId: 1, customerId: 1, operationDate: -1 });
+// Category bazlı sorgular için
+IncomeSchema.index({ companyId: 1, categoryId: 1, operationDate: -1 });
+// Payment status bazlı sorgular için
+IncomeSchema.index({ companyId: 1, isPaid: 1, operationDate: -1 });
+// Created at index (pagination için)
+IncomeSchema.index({ createdAt: -1 });

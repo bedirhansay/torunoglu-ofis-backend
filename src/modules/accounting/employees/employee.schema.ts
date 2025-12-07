@@ -34,4 +34,11 @@ export class Employee {
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);
+// Unique constraint: Employee name must be unique per company
 EmployeeSchema.index({ fullName: 1, companyId: 1 }, { unique: true });
+// Company bazlı sorgular için
+EmployeeSchema.index({ companyId: 1, isActive: 1 });
+// Department bazlı sorgular için
+EmployeeSchema.index({ companyId: 1, departmentName: 1 });
+// Created at index (pagination için)
+EmployeeSchema.index({ createdAt: -1 });

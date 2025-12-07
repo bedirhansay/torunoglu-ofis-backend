@@ -8,6 +8,7 @@ import { UpdateCategoryHandler } from './commands/handlers/update-category.handl
 import { DeleteCategoryHandler } from './commands/handlers/delete-category.handler';
 import { GetCategoryHandler } from './queries/handlers/get-category.handler';
 import { ListCategoriesHandler } from './queries/handlers/list-categories.handler';
+import { CompaniesModule } from '@core/companies/companies.module';
 
 const CommandHandlers = [CreateCategoryHandler, UpdateCategoryHandler, DeleteCategoryHandler];
 const QueryHandlers = [GetCategoryHandler, ListCategoriesHandler];
@@ -16,6 +17,7 @@ const QueryHandlers = [GetCategoryHandler, ListCategoriesHandler];
   imports: [
     CqrsModule,
     MongooseModule.forFeature([{ name: Category.name, schema: CategorySchema }]),
+    CompaniesModule,
   ],
   controllers: [CategoriesController],
   providers: [...CommandHandlers, ...QueryHandlers],

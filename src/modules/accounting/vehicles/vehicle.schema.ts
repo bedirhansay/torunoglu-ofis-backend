@@ -35,4 +35,11 @@ export class Vehicle {
 }
 
 export const VehicleSchema = SchemaFactory.createForClass(Vehicle);
+// Unique constraint: Plate number must be unique per company
 VehicleSchema.index({ plateNumber: 1, companyId: 1 }, { unique: true });
+// Company bazlı sorgular için
+VehicleSchema.index({ companyId: 1, isActive: 1 });
+// Driver bazlı sorgular için
+VehicleSchema.index({ companyId: 1, driverId: 1 });
+// Created at index (pagination için)
+VehicleSchema.index({ createdAt: -1 });

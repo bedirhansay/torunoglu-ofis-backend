@@ -23,5 +23,11 @@ export class Category {
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
-
+// Unique constraint: Category name must be unique per company and type
 CategorySchema.index({ name: 1, companyId: 1, type: 1 }, { unique: true });
+// Company ve type bazlı sorgular için
+CategorySchema.index({ companyId: 1, type: 1, isActive: 1 });
+// Active categories için hızlı sorgu
+CategorySchema.index({ companyId: 1, isActive: 1 });
+// Created at index (pagination için)
+CategorySchema.index({ createdAt: -1 });

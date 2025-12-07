@@ -8,6 +8,7 @@ import { UpdateCustomerHandler } from './commands/handlers/update-customer.handl
 import { DeleteCustomerHandler } from './commands/handlers/delete-customer.handler';
 import { GetCustomerHandler } from './queries/handlers/get-customer.handler';
 import { ListCustomersHandler } from './queries/handlers/list-customers.handler';
+import { CompaniesModule } from '@core/companies/companies.module';
 
 const CommandHandlers = [CreateCustomerHandler, UpdateCustomerHandler, DeleteCustomerHandler];
 const QueryHandlers = [GetCustomerHandler, ListCustomersHandler];
@@ -16,6 +17,7 @@ const QueryHandlers = [GetCustomerHandler, ListCustomersHandler];
   imports: [
     CqrsModule,
     MongooseModule.forFeature([{ name: Customer.name, schema: CustomerSchema }]),
+    CompaniesModule,
   ],
   controllers: [CustomersController],
   providers: [...CommandHandlers, ...QueryHandlers],

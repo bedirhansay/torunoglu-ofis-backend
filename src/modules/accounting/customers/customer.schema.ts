@@ -20,5 +20,11 @@ export class Customer {
 }
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);
-
+// Unique constraint: Customer name must be unique per company
 CustomerSchema.index({ name: 1, companyId: 1 }, { unique: true });
+// Company bazlı sorgular için
+CustomerSchema.index({ companyId: 1 });
+// Name search için (case-insensitive search için)
+CustomerSchema.index({ companyId: 1, name: 1 });
+// Created at index (pagination için)
+CustomerSchema.index({ createdAt: -1 });
