@@ -1,4 +1,3 @@
-import { PAGINATION_DEFAULT_PAGE, PAGINATION_DEFAULT_PAGE_SIZE } from '@common/constant/pagination.param';
 import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
 import { FilterBuilder } from '@common/helper/filter.builder';
 import { Injectable } from '@nestjs/common';
@@ -6,6 +5,10 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
+import {
+  PAGINATION_DEFAULT_PAGE,
+  PAGINATION_DEFAULT_PAGE_SIZE,
+} from '../../../../../common/constants/pagination.param';
 import { EmployeeDto } from '../../dto/employee.dto';
 import { Employee, EmployeeDocument } from '../../employee.schema';
 import { ListEmployeesQuery } from '../list-employees.query';
@@ -33,6 +36,9 @@ export class ListEmployeesHandler implements IQueryHandler<ListEmployeesQuery> {
       this.employeeModel.countDocuments(filter),
       this.employeeModel
         .find(filter)
+        .select(
+          '_id fullName phone departmentName hireDate terminationDate salary isActive description companyId createdAt updatedAt'
+        )
         .collation({ locale: 'tr', strength: 1 })
         .sort({ createdAt: -1 })
         .skip((validPageNumber - 1) * validPageSize)

@@ -1,10 +1,13 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiExtraModels,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -13,7 +16,8 @@ import {
 } from '@nestjs/swagger';
 
 import { ApiPaginatedResponse, ApiSearchPaginatedQuery } from '@common/decorator/swagger';
-import { PaginationDTO } from '@common/dto/request/pagination.request.dto';
+import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
+import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
 import { BaseResponseDto } from '@common/dto/response/base.response.dto';
 import { CommandResponseDto } from '@common/dto/response/command-response.dto';
 import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
@@ -35,7 +39,7 @@ import { ListCompaniesQuery } from './queries/list-companies.query';
   CompanyDto,
   CreateCompanyDto,
   UpdateCompanyDto,
-  PaginationDTO
+  PaginatedSearchDTO
 )
 @Controller('companies')
 export class CompaniesController {
@@ -56,12 +60,12 @@ export class CompaniesController {
     type: PaginatedResponseDto,
     description: 'Şirketler başarıyla listelendi',
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz sorgu parametreleri',
+    type: ErrorResponseDto,
   })
-  async findAll(@Query() query: PaginationDTO): Promise<PaginatedResponseDto<CompanyDto>> {
-    const listQuery = new ListCompaniesQuery(query.pageNumber, query.pageSize);
+  async findAll(@Query() query: PaginatedSearchDTO): Promise<PaginatedResponseDto<CompanyDto>> {
+    const listQuery = new ListCompaniesQuery(query.pageNumber, query.pageSize, query.search);
     return this.queryBus.execute(listQuery);
   }
 
@@ -75,18 +79,27 @@ export class CompaniesController {
   @ApiBody({
     type: CreateCompanyDto,
     description: 'Oluşturulacak şirket bilgileri',
+    examples: {
+      example1: {
+        summary: 'Şirket oluştur',
+        value: {
+          name: 'Örnek Şirket A.Ş.',
+          description: 'Muhasebe sistemi',
+        },
+      },
+    },
   })
   @ApiCreatedResponse({
     type: CommandResponseDto,
     description: 'Şirket başarıyla oluşturuldu',
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @ApiConflictResponse({
     description: 'Aynı isimde bir şirket zaten mevcut',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz şirket bilgileri',
+    type: ErrorResponseDto,
   })
   async create(@Body() createCompanyDto: CreateCompanyDto): Promise<CommandResponseDto> {
     const command = new CreateCompanyCommand(createCompanyDto.name, createCompanyDto.description);
@@ -109,13 +122,13 @@ export class CompaniesController {
     type: BaseResponseDto,
     description: 'Şirket bulundu',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiNotFoundResponse({
     description: 'Şirket bulunamadı',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz şirket ID',
+    type: ErrorResponseDto,
   })
   async findOne(@Param('id') id: string): Promise<CompanyDto> {
     const query = new GetCompanyQuery(id);
@@ -137,22 +150,30 @@ export class CompaniesController {
   @ApiBody({
     type: UpdateCompanyDto,
     description: 'Güncellenecek şirket bilgileri (kısmi güncelleme)',
+    examples: {
+      example1: {
+        summary: 'Şirket adı güncelle',
+        value: {
+          name: 'Yeni Şirket Adı A.Ş.',
+        },
+      },
+    },
   })
   @ApiOkResponse({
     type: CommandResponseDto,
     description: 'Şirket başarıyla güncellendi',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiNotFoundResponse({
     description: 'Güncellenecek şirket bulunamadı',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz şirket ID veya güncelleme verisi',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @ApiConflictResponse({
     description: 'Aynı isimde başka bir şirket zaten mevcut',
+    type: ErrorResponseDto,
   })
   async update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto): Promise<CommandResponseDto> {
     const command = new UpdateCompanyCommand(id, updateCompanyDto.name, updateCompanyDto.description);
@@ -176,13 +197,13 @@ export class CompaniesController {
     type: CommandResponseDto,
     description: 'Şirket başarıyla silindi',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiNotFoundResponse({
     description: 'Silinecek şirket bulunamadı',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz şirket ID',
+    type: ErrorResponseDto,
   })
   async remove(@Param('id') id: string): Promise<CommandResponseDto> {
     const command = new DeleteCompanyCommand(id);

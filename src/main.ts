@@ -15,9 +15,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
-  app.use(createHelmetConfig());
-
   app.enableCors(createCorsConfig(configService));
+
+  app.use(createHelmetConfig());
 
   app.useGlobalPipes(new ValidationPipe(createValidationConfig(configService)));
 

@@ -19,7 +19,7 @@ export class CreateCategoryHandler implements ICommandHandler<CreateCategoryComm
 
   async execute(command: CreateCategoryCommand): Promise<CommandResponseDto> {
     const allowedTypes = Object.values(CategoryType);
-    if (!allowedTypes.includes(command.type as CategoryType)) {
+    if (!allowedTypes.includes(command.createCategoryDto.type as CategoryType)) {
       throw new BadRequestException(
         `${CreateCategoryHandler.ERROR_MESSAGES.INVALID_CATEGORY_TYPE}. Geçerli değerler: ${allowedTypes.join(', ')}`
       );
@@ -27,7 +27,7 @@ export class CreateCategoryHandler implements ICommandHandler<CreateCategoryComm
 
     const exists = await this.categoryModel
       .findOne({
-        name: command.name,
+        name: command.createCategoryDto.name,
         companyId: new Types.ObjectId(command.companyId),
       })
       .lean()
@@ -38,10 +38,10 @@ export class CreateCategoryHandler implements ICommandHandler<CreateCategoryComm
     }
 
     const created = await new this.categoryModel({
-      name: command.name,
-      description: command.description,
-      type: command.type,
-      isActive: command.isActive,
+      name: command.createCategoryDto.name,
+      description: command.createCategoryDto.description,
+      type: command.createCategoryDto.type,
+      isActive: command.createCategoryDto.isActive ?? true,
       companyId: new Types.ObjectId(command.companyId),
     }).save();
 

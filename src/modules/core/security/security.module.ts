@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { APP_PIPE } from '@nestjs/core';
 import {
   EnhancedValidationPipe,
   MongoSanitizationPipe,
@@ -10,18 +9,7 @@ import {
 
 @Module({
   imports: [],
-  providers: [
-    SanitizePipe,
-    MongoSanitizationPipe,
-    ParseObjectIdPipe,
-    EnhancedValidationPipe,
-    SanitizationPipe,
-    // Global pipe olarak SanitizationPipe'ı kullan (XSS ve NoSQL injection koruması)
-    {
-      provide: APP_PIPE,
-      useClass: MongoSanitizationPipe,
-    },
-  ],
+  providers: [SanitizePipe, MongoSanitizationPipe, ParseObjectIdPipe, EnhancedValidationPipe, SanitizationPipe],
   exports: [SanitizePipe, MongoSanitizationPipe, ParseObjectIdPipe, EnhancedValidationPipe, SanitizationPipe],
 })
 export class SecurityModule {}

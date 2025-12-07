@@ -6,8 +6,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
 import { VehicleDto } from '../../dto/vehicle.dto';
-import { ListVehiclesQuery } from '../list-vehicles.query';
 import { Vehicle, VehicleDocument } from '../../vehicle.schema';
+import { ListVehiclesQuery } from '../list-vehicles.query';
 
 @Injectable()
 @QueryHandler(ListVehiclesQuery)

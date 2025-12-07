@@ -1,11 +1,11 @@
+import { Expense } from '@accounting/expenses/expense.schema';
+import { Fuel } from '@accounting/fuels/fuel.schema';
+import { Income } from '@accounting/incomes/income.schema';
 import { Injectable } from '@nestjs/common';
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
 import dayjs from 'dayjs';
-import { Expense } from '@accounting/expense/expense.schema';
-import { Fuel } from '@accounting/fuel/fuel.schema';
-import { Income } from '@accounting/income/income.schema';
+import { Model, Types } from 'mongoose';
 import { MonthlyReportItemDto } from '../../dto/total-summary-dto';
 import { GetMonthlySummaryQuery } from '../get-monthly-summary.query';
 
@@ -135,4 +135,3 @@ export class GetMonthlySummaryHandler implements IQueryHandler<GetMonthlySummary
     return monthlyData;
   }
 }
-

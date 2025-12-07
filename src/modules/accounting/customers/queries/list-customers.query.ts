@@ -5,9 +5,6 @@ export class ListCustomersQuery implements IQuery {
     public readonly companyId: string,
     public readonly pageNumber?: number,
     public readonly pageSize?: number,
-    public readonly search?: string,
-    public readonly beginDate?: string,
-    public readonly endDate?: string,
+    public readonly search?: string
   ) {}
 }
-

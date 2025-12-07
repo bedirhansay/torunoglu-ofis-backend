@@ -1,4 +1,3 @@
-// src/utils/object-id.util.ts
 import { BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { Types } from 'mongoose';

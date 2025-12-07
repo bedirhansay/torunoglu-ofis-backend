@@ -1,20 +1,20 @@
+import { comparePassword } from '@common/utils/password.util';
+import { User, UserDocument } from '@core/users/user.schema';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
-import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
-import { comparePassword } from '@common/utils/password.util';
-import { LoginCommand } from '../login.command';
-import { User, UserDocument } from '@core/users/user.schema';
+import { Model } from 'mongoose';
 import { LoginResponseDto, UserResponseDto } from '../../dto/login.dto';
+import { LoginCommand } from '../login.command';
 
 @Injectable()
 @CommandHandler(LoginCommand)
 export class LoginHandler implements ICommandHandler<LoginCommand> {
   constructor(
     private readonly jwtService: JwtService,
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
 
   async execute(command: LoginCommand): Promise<LoginResponseDto> {
@@ -38,7 +38,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     };
 
     const token = await this.jwtService.signAsync(payload, {
-      expiresIn: '365d',
+      expiresIn: process.env.JWT_EXPIRES_IN || (process.env.NODE_ENV === 'production' ? '1h' : '7d'),
     });
 
     return {
@@ -55,4 +55,3 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
       .select('+password');
   }
 }
-

@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { getMonthRange } from '@common/helper/date';
-import { ensureValidObjectId } from '@common/helper/object.id';
 import { Customer } from '@accounting/customers/customer.schema';
 import { Employee } from '@accounting/employees/employee.schema';
-import { Expense } from '@accounting/expense/expense.schema';
-import { Fuel } from '@accounting/fuel/fuel.schema';
-import { Income } from '@accounting/income/income.schema';
+import { Expense } from '@accounting/expenses/expense.schema';
+import { Fuel } from '@accounting/fuels/fuel.schema';
+import { Income } from '@accounting/incomes/income.schema';
 import { Vehicle } from '@accounting/vehicles/vehicle.schema';
+import { getMonthRange } from '@common/helper/date';
+import { ensureValidObjectId } from '@common/helper/object.id';
+import { Injectable } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
 import { DashboardStatsDto } from '../../dto/total-summary-dto';
 import { GetDashboardStatsQuery } from '../get-dashboard-stats.query';
 
@@ -110,4 +110,3 @@ export class GetDashboardStatsHandler implements IQueryHandler<GetDashboardStats
     return incomeCount + expenseCount + fuelCount;
   }
 }
-

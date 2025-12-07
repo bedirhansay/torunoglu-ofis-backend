@@ -1,11 +1,22 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiExtraModels,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { ApiBaseResponse, ApiCommandResponse, ApiPaginatedResponse } from '@common/decorator/swagger';
 import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
 import { BaseResponseDto } from '@common/dto/response/base.response.dto';
 import { CommandResponseDto } from '@common/dto/response/command-response.dto';
+import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
 import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
 import { CreateUserCommand } from './commands/create-user.command';
 import { DeleteUserCommand } from './commands/delete-user.command';
@@ -39,6 +50,8 @@ export class UsersController {
   @ApiOperation({ summary: 'Yeni kullanıcı oluştur', operationId: 'createUser' })
   @ApiCommandResponse()
   @ApiBody({ type: CreateUserDto })
+  @ApiBadRequestResponse({ description: 'Geçersiz kullanıcı bilgileri', type: ErrorResponseDto })
+  @ApiConflictResponse({ description: 'Bu kullanıcı adı veya email zaten kullanılıyor', type: ErrorResponseDto })
   async create(@Body() createUserDto: CreateUserDto) {
     const command = new CreateUserCommand(
       createUserDto.username,
@@ -61,6 +74,8 @@ export class UsersController {
   @Get(':id')
   @ApiOperation({ summary: 'ID ile kullanıcı getir', operationId: 'getUserById' })
   @ApiBaseResponse(UserDto)
+  @ApiBadRequestResponse({ description: 'Geçersiz kullanıcı ID', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Kullanıcı bulunamadı', type: ErrorResponseDto })
   async findOne(@Param('id') id: string) {
     const query = new GetUserQuery(id);
     return this.queryBus.execute(query);
@@ -70,6 +85,9 @@ export class UsersController {
   @ApiOperation({ summary: 'Kullanıcı bilgilerini güncelle', operationId: 'updateUser' })
   @ApiCommandResponse()
   @ApiBody({ type: UpdateUserDto })
+  @ApiBadRequestResponse({ description: 'Geçersiz kullanıcı ID veya güncelleme verisi', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Kullanıcı bulunamadı', type: ErrorResponseDto })
+  @ApiConflictResponse({ description: 'Bu kullanıcı adı veya email zaten kullanılıyor', type: ErrorResponseDto })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const command = new UpdateUserCommand(
       id,
@@ -85,6 +103,8 @@ export class UsersController {
   @Delete(':id')
   @ApiOperation({ summary: 'Kullanıcı sil', operationId: 'deleteUser' })
   @ApiCommandResponse()
+  @ApiBadRequestResponse({ description: 'Geçersiz kullanıcı ID', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Kullanıcı bulunamadı', type: ErrorResponseDto })
   async remove(@Param('id') id: string) {
     const command = new DeleteUserCommand(id);
     return this.commandBus.execute(command);

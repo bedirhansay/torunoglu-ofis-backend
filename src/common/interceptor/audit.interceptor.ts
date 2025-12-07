@@ -1,18 +1,21 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
+import { ErrorLoggerService } from '@core/logger/logger.service';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ErrorLoggerService } from '@core/logger/logger.service';
+import { maskSensitiveData } from '../utils/log-utils';
 
 @Injectable()
 export class AuditInterceptor implements NestInterceptor {
-  private readonly logger = new Logger('Audit');
-
-  constructor(private readonly errorLogger: ErrorLoggerService) {}
+  constructor(
+    private readonly logger: PinoLogger,
+    private readonly errorLogger: ErrorLoggerService
+  ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
     const { method, url, body, user, companyId } = request;
-    const userId = user?.id || 'anonymous';
+    const userId = (user as any)?.id?.toString() || 'anonymous';
     const timestamp = new Date().toISOString();
 
     // Audit log için bilgileri topla
@@ -29,33 +32,39 @@ export class AuditInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap({
         next: (data) => {
-          // Başarılı işlemler için audit log
-          this.logger.debug(`Audit: ${method} ${url} - User: ${userId} - Company: ${companyId || 'N/A'}`);
-          
-          // Önemli işlemler için detaylı log (POST, PATCH, DELETE)
+          const response = context.switchToHttp().getResponse();
+          const statusCode = response.statusCode;
+
           if (['POST', 'PATCH', 'DELETE'].includes(method)) {
-            this.logger.log(
-              JSON.stringify({
+            this.logger.info(
+              {
                 ...auditData,
                 action: 'SUCCESS',
-                statusCode: context.switchToHttp().getResponse().statusCode,
-              })
+                statusCode,
+                correlationId: request.correlationId,
+                body: body ? maskSensitiveData(body) : undefined,
+              },
+              `Audit: ${method} ${url} - User: ${userId} - Company: ${companyId || 'N/A'}`
             );
           }
         },
         error: (error) => {
-          // Hatalı işlemler için audit log
+          const statusCode = error.status || 500;
+
           this.logger.error(
-            JSON.stringify({
+            {
               ...auditData,
               action: 'ERROR',
               error: error.message,
-              statusCode: error.status || 500,
-            })
+              statusCode,
+              correlationId: request.correlationId,
+              stack: error.stack,
+              body: body ? maskSensitiveData(body) : undefined,
+            },
+            `Audit Error: ${method} ${url} - ${error.message}`
           );
 
-          // Kritik hataları error logger'a da kaydet
-          if (error.status >= 500) {
+          if (statusCode >= 500) {
             this.errorLogger.logError({
               message: `Audit Error: ${method} ${url}`,
               stack: error.stack,
@@ -70,4 +79,3 @@ export class AuditInterceptor implements NestInterceptor {
     );
   }
 }
-

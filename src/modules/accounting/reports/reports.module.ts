@@ -4,16 +4,17 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Customer, CustomerSchema } from '../customers/customer.schema';
 import { Employee, EmployeeSchema } from '../employees/employee.schema';
-import { Expense, ExpenseSchema } from '../expense/expense.schema';
-import { Fuel, FuelSchema } from '../fuel/fuel.schema';
-import { Income, IncomeSchema } from '../income/income.schema';
+import { Expense, ExpenseSchema } from '../expenses/expense.schema';
+import { Fuel, FuelSchema } from '../fuels/fuel.schema';
+import { Income, IncomeSchema } from '../incomes/income.schema';
 import { Vehicle, VehicleSchema } from '../vehicles/vehicle.schema';
+import { ExportFinancialSummaryHandler } from './queries/handlers/export-financial-summary.handler';
 import { GetCustomerIncomeSummaryHandler } from './queries/handlers/get-customer-income-summary.handler';
 import { GetDashboardStatsHandler } from './queries/handlers/get-dashboard-stats.handler';
 import { GetDetailedSummaryHandler } from './queries/handlers/get-detailed-summary.handler';
 import { GetMonthlySummaryHandler } from './queries/handlers/get-monthly-summary.handler';
+import { GetVehicleMonthlyFuelReportHandler } from './queries/handlers/get-vehicle-monthly-fuel-report.handler';
 import { ReportsController } from './reports.controller';
-import { ExportFinancialSummaryHandler } from './queries/handlers/export-financial-summary.handler';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ExportFinancialSummaryHandler } from './queries/handlers/export-financi
     GetMonthlySummaryHandler,
     GetDetailedSummaryHandler,
     GetCustomerIncomeSummaryHandler,
+    GetVehicleMonthlyFuelReportHandler,
     ExportFinancialSummaryHandler,
   ],
 })

@@ -13,22 +13,25 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiConflictResponse,
   ApiExtraModels,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
-  ApiResponse,
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 
 import { CurrentCompany } from '@common/decorator/company.id';
-import { ApiCommandResponse, ApiPaginatedResponse, ApiSearchDatePaginatedQuery } from '@common/decorator/swagger';
-import { PaginatedDateSearchDTO } from '@common/dto/request/pagination.request.dto';
+import { ApiCommandResponse, ApiPaginatedResponse, ApiSearchPaginatedQuery } from '@common/decorator/swagger';
+import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
 import { BaseResponseDto } from '@common/dto/response/base.response.dto';
 import { CommandResponseDto } from '@common/dto/response/command-response.dto';
+import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
 import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
 import { CompanyGuard } from '@common/guards/company.id';
 
@@ -49,7 +52,7 @@ import { ListCustomersQuery } from './queries/list-customers.query';
   PaginatedResponseDto,
   CommandResponseDto,
   CustomerDto,
-  PaginatedDateSearchDTO,
+  PaginatedSearchDTO,
   CreateCustomerDto,
   UpdateCustomerDto
 )
@@ -64,27 +67,20 @@ export class CustomersController {
   @Get()
   @ApiOperation({
     summary: 'Tüm müşterileri listele',
-    description: 'Şirkete ait tüm müşterileri sayfalı olarak listeler. İsteğe bağlı arama ve tarih filtreleme desteği.',
+    description: 'Şirkete ait tüm müşterileri sayfalı olarak listeler. İsteğe bağlı arama desteği.',
     operationId: 'getAllCustomers',
   })
-  @ApiSearchDatePaginatedQuery()
+  @ApiSearchPaginatedQuery()
   @ApiPaginatedResponse(CustomerDto)
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz sorgu parametreleri',
+    type: ErrorResponseDto,
   })
   async findAll(
-    @Query() query: PaginatedDateSearchDTO,
+    @Query() query: PaginatedSearchDTO,
     @CurrentCompany() companyId: string
   ): Promise<PaginatedResponseDto<CustomerDto>> {
-    const listQuery = new ListCustomersQuery(
-      companyId,
-      query.pageNumber,
-      query.pageSize,
-      query.search,
-      query.beginDate,
-      query.endDate
-    );
+    const listQuery = new ListCustomersQuery(companyId, query.pageNumber, query.pageSize, query.search);
     return this.queryBus.execute(listQuery);
   }
 
@@ -98,15 +94,25 @@ export class CustomersController {
   @ApiBody({
     type: CreateCustomerDto,
     description: 'Oluşturulacak müşteri bilgileri',
+    examples: {
+      example1: {
+        summary: 'Müşteri oluştur',
+        value: {
+          name: 'Ahmet Yılmaz',
+          phone: '+90 532 123 45 67',
+          description: 'Düzenli müşteri',
+        },
+      },
+    },
   })
   @ApiCommandResponse()
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @ApiConflictResponse({
     description: 'Bu isimde bir müşteri zaten mevcut',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz müşteri bilgileri',
+    type: ErrorResponseDto,
   })
   async create(
     @Body() createCustomerDto: CreateCustomerDto,
@@ -137,13 +143,13 @@ export class CustomersController {
     type: CustomerDto,
     description: 'Müşteri başarıyla getirildi',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiNotFoundResponse({
     description: 'Müşteri bulunamadı',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz müşteri ID',
+    type: ErrorResponseDto,
   })
   async findOne(@Param('id') id: string, @CurrentCompany() companyId: string): Promise<CustomerDto> {
     const query = new GetCustomerQuery(id, companyId);
@@ -165,19 +171,27 @@ export class CustomersController {
   @ApiBody({
     type: UpdateCustomerDto,
     description: 'Güncellenecek müşteri bilgileri (kısmi güncelleme)',
+    examples: {
+      example1: {
+        summary: 'Müşteri telefonu güncelle',
+        value: {
+          phone: '+90 532 999 99 99',
+        },
+      },
+    },
   })
   @ApiCommandResponse()
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiNotFoundResponse({
     description: 'Güncellenecek müşteri bulunamadı',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz müşteri ID veya güncelleme verisi',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @ApiConflictResponse({
     description: 'Aynı isimde başka bir müşteri zaten mevcut',
+    type: ErrorResponseDto,
   })
   async update(
     @Param('id') id: string,
@@ -208,13 +222,13 @@ export class CustomersController {
     example: '507f1f77bcf86cd799439011',
   })
   @ApiCommandResponse()
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiNotFoundResponse({
     description: 'Silinecek müşteri bulunamadı',
+    type: ErrorResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Geçersiz müşteri ID',
+    type: ErrorResponseDto,
   })
   async remove(@Param('id') id: string, @CurrentCompany() companyId: string): Promise<CommandResponseDto> {
     const command = new DeleteCustomerCommand(id, companyId);

@@ -11,5 +11,6 @@ export function createHelmetConfig() {
       },
     },
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   });
 }

@@ -22,7 +22,8 @@ export class GetVehicleHandler implements IQueryHandler<GetVehicleQuery> {
 
     const vehicle = await this.vehicleModel
       .findOne({ _id: new Types.ObjectId(query.id), companyId: new Types.ObjectId(query.companyId) })
-      .populate('driverId', 'fullName')
+      .select('_id plateNumber brand model inspectionDate insuranceDate isActive description driverId companyId createdAt updatedAt')
+      .populate('driverId', '_id fullName')
       .lean()
       .exec();
 

@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Customer } from '@accounting/customers/customer.schema';
+import { Income } from '@accounting/incomes/income.schema';
 import { getMonthRange } from '@common/helper/date';
 import { ensureValidObjectId } from '@common/helper/object.id';
-import { Customer } from '@accounting/customers/customer.schema';
-import { Income } from '@accounting/income/income.schema';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
 import { CustomerIncomeSummaryDto } from '../../dto/customer-report.dto';
 import { GetCustomerIncomeSummaryQuery } from '../get-customer-income-summary.query';
 
@@ -113,4 +113,3 @@ export class GetCustomerIncomeSummaryHandler implements IQueryHandler<GetCustome
     };
   }
 }
-

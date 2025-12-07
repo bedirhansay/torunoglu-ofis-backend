@@ -25,7 +25,8 @@ export class GetPaymentHandler implements IQueryHandler<GetPaymentQuery> {
         _id: new Types.ObjectId(query.id),
         companyId: new Types.ObjectId(query.companyId),
       })
-      .populate('customerId', 'name')
+      .select('_id customerId amount operationDate description companyId createdAt updatedAt')
+      .populate('customerId', '_id name')
       .lean()
       .exec();
 

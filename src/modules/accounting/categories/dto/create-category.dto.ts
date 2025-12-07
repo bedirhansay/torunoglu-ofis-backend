@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { VALIDATION_MESSAGES } from '@common/constants/validation-messages.constants';
 import { CategoryType } from './category.dto';
 
 export class CreateCategoryDto {
@@ -7,7 +8,9 @@ export class CreateCategoryDto {
     description: 'Kategori adı',
     example: 'Elektrik Gideri',
   })
-  @IsString()
+  @IsString({ message: VALIDATION_MESSAGES.IS_STRING('Kategori adı') })
+  @IsNotEmpty({ message: VALIDATION_MESSAGES.REQUIRED('Kategori adı') })
+  @Length(2, 100, { message: VALIDATION_MESSAGES.LENGTH('Kategori adı', 2, 100) })
   name: string;
 
   @ApiPropertyOptional({
@@ -15,12 +18,13 @@ export class CreateCategoryDto {
     example: 'Aylık düzenli elektrik faturaları',
   })
   @IsOptional()
-  @IsString()
+  @IsString({ message: VALIDATION_MESSAGES.IS_STRING('Açıklama') })
+  @Length(0, 500, { message: VALIDATION_MESSAGES.MAX_LENGTH('Açıklama', 500) })
   description?: string;
 
   @ApiProperty({ example: true })
   @IsOptional()
-  @IsBoolean()
+  @IsBoolean({ message: VALIDATION_MESSAGES.IS_BOOLEAN('Aktiflik durumu') })
   isActive?: boolean;
 
   @ApiProperty({
@@ -28,6 +32,8 @@ export class CreateCategoryDto {
     enum: CategoryType,
     example: CategoryType.EXPENSE,
   })
-  @IsEnum(CategoryType)
+  @IsEnum(CategoryType, {
+    message: VALIDATION_MESSAGES.IS_ENUM('Kategori tipi', Object.values(CategoryType)),
+  })
   type: CategoryType;
 }

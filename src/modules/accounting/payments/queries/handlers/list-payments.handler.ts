@@ -34,16 +34,18 @@ export class ListPaymentsHandler implements IQueryHandler<ListPaymentsQuery> {
       if (endDate) filter.operationDate.$lte = new Date(endDate);
     }
 
-    const totalCount = await this.paymentModel.countDocuments(filter);
-
-    const payments = await this.paymentModel
-      .find(filter)
-      .populate('customerId', 'name')
-      .sort({ operationDate: -1 })
-      .skip((pageNumber - 1) * pageSize)
-      .limit(pageSize)
-      .lean()
-      .exec();
+    const [totalCount, payments] = await Promise.all([
+      this.paymentModel.countDocuments(filter),
+      this.paymentModel
+        .find(filter)
+        .select('_id customerId amount operationDate description companyId createdAt updatedAt')
+        .populate('customerId', '_id name')
+        .sort({ operationDate: -1 })
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
+        .lean()
+        .exec(),
+    ]);
 
     const items = plainToInstance(PaymentDto, payments, { excludeExtraneousValues: true });
 
