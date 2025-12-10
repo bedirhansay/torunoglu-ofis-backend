@@ -1,5 +1,5 @@
-import { EmployeeDto } from '@accounting/employees/dto/employee.dto';
-import { BaseDto } from '@common/dto/base/base.dto';
+import { EmployeeDto } from '../../../accounting/employees/dto/employee.dto';
+import { BaseDto } from '../../../../common/dto/base/base.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, plainToInstance, Transform } from 'class-transformer';
 

@@ -1,5 +1,5 @@
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { hashPassword } from '@common/utils/password.util';
+import { CommandResponseDto } from '../../../../../common';
+import { hashPassword } from '../../../../../common/utils/password.util';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

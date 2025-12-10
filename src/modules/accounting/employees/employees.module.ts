@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
-import { Company, CompanySchema } from '@core/companies/company.schema';
+import { Company, CompanySchema } from '../../core/companies/company.schema';
 import { EmployeesController } from './employees.controller';
 import { Employee, EmployeeSchema } from './employee.schema';
 import { CreateEmployeeHandler } from './commands/handlers/create-employee.handler';

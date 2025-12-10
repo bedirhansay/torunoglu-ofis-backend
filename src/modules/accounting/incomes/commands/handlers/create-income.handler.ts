@@ -1,10 +1,10 @@
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
 import { Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { CreateIncomeCommand } from '../create-income.command';
+import { CommandResponseDto } from '../../../../../common';
 import { Income, IncomeDocument } from '../../income.schema';
+import { CreateIncomeCommand } from '../create-income.command';
 
 @Injectable()
 @CommandHandler(CreateIncomeCommand)

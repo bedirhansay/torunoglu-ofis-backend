@@ -1,7 +1,7 @@
-import { BaseDto } from '@common/dto/base/base.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose, plainToInstance, Transform } from 'class-transformer';
 import { IsEnum } from 'class-validator';
+import { BaseDto } from '../../../../common/dto/base/base.dto';
 import { CategoryDto } from '../../categories/dto/category.dto';
 
 export enum RelatedModelEnum {

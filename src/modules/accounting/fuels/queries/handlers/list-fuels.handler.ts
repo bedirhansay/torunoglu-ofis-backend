@@ -1,10 +1,10 @@
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
-import { FilterBuilder } from '@common/helper/filter.builder';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
+import { PaginatedResponseDto } from '../../../../../common/dto/response/paginated.response.dto';
+import { FilterBuilder } from '../../../../../common/helper/filter.builder';
 import { FuelDto } from '../../dto/fuel.dto';
 import { Fuel, FuelDocument } from '../../fuel.schema';
 import { ListFuelsQuery } from '../list-fuels.query';

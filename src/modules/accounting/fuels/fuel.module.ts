@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
-import { Company, CompanySchema } from '@core/companies/company.schema';
+  import { Company, CompanySchema } from '../../core/companies/company.schema';
 import { FuelController } from './fuel.controller';
 import { Fuel, FuelSchema } from './fuel.schema';
 import { CreateFuelHandler } from './commands/handlers/create-fuel.handler';

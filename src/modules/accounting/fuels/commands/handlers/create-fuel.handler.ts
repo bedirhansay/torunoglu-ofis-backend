@@ -1,11 +1,11 @@
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { ensureValidObjectId } from '@common/helper/object.id';
 import { Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { CreateFuelCommand } from '../create-fuel.command';
+import { CommandResponseDto } from '../../../../../common';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { Fuel, FuelDocument } from '../../fuel.schema';
+import { CreateFuelCommand } from '../create-fuel.command';
 
 @Injectable()
 @CommandHandler(CreateFuelCommand)

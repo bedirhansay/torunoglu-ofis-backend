@@ -1,9 +1,9 @@
-import { ensureValidObjectId } from '@common/helper/object.id';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { IncomeDto } from '../../dto/income.dto';
 import { Income, IncomeDocument } from '../../income.schema';
 import { GetIncomeQuery } from '../get-income.query';

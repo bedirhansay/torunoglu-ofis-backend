@@ -1,6 +1,6 @@
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
-import { FilterBuilder } from '@common/helper/filter.builder';
-import { ensureValidObjectId } from '@common/helper/object.id';
+import { PaginatedResponseDto } from '../../../../../common/dto/response/paginated.response.dto';
+import { FilterBuilder } from '../../../../../common/helper/filter.builder';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

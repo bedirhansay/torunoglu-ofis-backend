@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Response } from 'express';
 import { Model } from 'mongoose';
-import { ExcelColumnConfig, ExcelHelper } from '@common/helper/excel.helper';
-import { FilterBuilder } from '@common/helper/filter.builder';
+import { ExcelColumnConfig, ExcelHelper } from '../../../../../common/helper/excel.helper';
+import { FilterBuilder } from '../../../../../common/helper/filter.builder';
 import { Fuel, FuelDocument } from '../../fuel.schema';
 import { ExportFuelsQuery } from '../export-fuels.query';
 
@@ -101,4 +101,3 @@ export class ExportFuelsHandler {
     await ExcelHelper.sendAsResponse(workbook, res, fileName);
   }
 }
-

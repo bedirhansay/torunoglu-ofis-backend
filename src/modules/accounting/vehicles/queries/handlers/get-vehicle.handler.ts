@@ -3,7 +3,7 @@ import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
-import { ensureValidObjectId } from '@common/helper/object.id';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { VehicleDto } from '../../dto/vehicle.dto';
 import { Vehicle, VehicleDocument } from '../../vehicle.schema';
 import { GetVehicleQuery } from '../get-vehicle.query';

@@ -1,6 +1,6 @@
-import { DEFAULT_API_PARAMS } from '@common/constants';
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
-import { FilterBuilder } from '@common/helper/filter.builder';
+import { DEFAULT_API_PARAMS } from '../../../../../common/constants';
+import { PaginatedResponseDto } from '../../../../../common/dto/response/paginated.response.dto';
+import { FilterBuilder } from '../../../../../common/helper/filter.builder';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Response } from 'express';
 import { Model, Types } from 'mongoose';
-import { getLocalDateRange } from '@common/helper/date-timezone';
-import { ExcelColumnConfig, ExcelHelper } from '@common/helper/excel.helper';
+  import { getLocalDateRange } from '../../../../../common/helper/date-timezone';
+import { ExcelColumnConfig, ExcelHelper } from '../../../../../common/helper/excel.helper';
 import { Fuel, FuelDocument } from '../../fuel.schema';
 import { ExportMonthlyFuelSummaryQuery } from '../export-monthly-fuel-summary.query';
 
@@ -93,4 +93,3 @@ export class ExportMonthlyFuelSummaryHandler {
     await ExcelHelper.sendAsResponse(workbook, res, fileName);
   }
 }
-

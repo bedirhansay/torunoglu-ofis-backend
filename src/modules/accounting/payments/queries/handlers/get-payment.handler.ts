@@ -3,7 +3,7 @@ import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
-import { ensureValidObjectId } from '@common/helper/object.id';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { PaymentDto } from '../../dto/payment.dto';
 import { Payment, PaymentDocument } from '../../payment.schema';
 import { GetPaymentQuery } from '../get-payment.query';

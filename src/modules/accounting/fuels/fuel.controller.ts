@@ -27,15 +27,19 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { CurrentCompany } from '@common/decorator/company.id';
-import { ApiCommandResponse, ApiPaginatedResponse, ApiSearchDatePaginatedQuery } from '@common/decorator/swagger';
-import { DateRangeDTO, PaginatedDateSearchDTO } from '@common/dto/request';
-import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
-import { BaseResponseDto } from '@common/dto/response/base.response.dto';
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
-import { CompanyGuard } from '@common/guards/company.id';
+    import { CurrentCompany } from '../../../common/decorator/company.id';
+import {
+  ApiCommandResponse,
+  ApiPaginatedResponse,
+  ApiSearchDatePaginatedQuery,
+  } from '../../../common/decorator/swagger';
+import { DateRangeDTO, PaginatedDateSearchDTO } from '../../../common/dto/request';
+import { PaginatedSearchDTO } from '../../../common/dto/request/search.request.dto';
+import { BaseResponseDto } from '../../../common/dto/response/base.response.dto';
+import { CommandResponseDto } from '../../../common/dto/response/command-response.dto';
+import { ErrorResponseDto } from '../../../common/dto/response/error.response.dto';
+import { PaginatedResponseDto } from '../../../common/dto/response/paginated.response.dto';
+import { CompanyGuard } from '../../../common/guards/company.id';
 import { CreateFuelCommand } from './commands/create-fuel.command';
 import { DeleteFuelCommand } from './commands/delete-fuel.command';
 import { UpdateFuelCommand } from './commands/update-fuel.command';

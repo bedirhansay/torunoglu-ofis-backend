@@ -11,19 +11,19 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { CurrentCompany } from '@common/decorator/company.id';
+import { CurrentCompany } from '../../../common/decorator/company.id';
 import {
   ApiBaseResponse,
   ApiCommandResponse,
   ApiPaginatedResponse,
   ApiSearchDatePaginatedQuery,
-} from '@common/decorator/swagger';
-import { CompanyGuard } from '@common/guards/company.id';
+} from '../../../common/decorator/swagger';
+import { CompanyGuard } from '../../../common/guards/company.id';
 
-import { PaginatedDateSearchDTO } from '@common/dto/request/pagination.request.dto';
-import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
+import { PaginatedDateSearchDTO } from '../../../common/dto/request/pagination.request.dto';
+import { ErrorResponseDto } from '../../../common/dto/response/error.response.dto';
+import { CommandResponseDto } from '../../../common/dto/response/command-response.dto';
+import { PaginatedResponseDto } from '../../../common/dto/response/paginated.response.dto';
 
 import { CreatePaymentCommand } from './commands/create-payment.command';
 import { DeletePaymentCommand } from './commands/delete-payment.command';

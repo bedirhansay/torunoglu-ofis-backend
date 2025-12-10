@@ -1,6 +1,6 @@
-import { BaseDto } from '@common/dto/base/base.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, plainToInstance, Transform } from 'class-transformer';
+import { BaseDto } from '../../../../common/dto/base/base.dto';
 import { CustomerDto } from '../../customers/dto/customer.dto';
 
 @Exclude()

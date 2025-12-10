@@ -25,19 +25,19 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { CurrentCompany } from '@common/decorator/company.id';
+import { CurrentCompany } from '../../../common/decorator/company.id';
 import {
   ApiBaseResponse,
   ApiCommandResponse,
   ApiPaginatedResponse,
   ApiSearchPaginatedQuery,
-} from '@common/decorator/swagger';
-import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
-import { BaseResponseDto } from '@common/dto/response/base.response.dto';
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
-import { CompanyGuard } from '@common/guards/company.id';
+  } from '../../../common/decorator/swagger';
+import { PaginatedSearchDTO } from '../../../common/dto/request/search.request.dto';
+import { BaseResponseDto } from '../../../common/dto/response/base.response.dto';
+import { CommandResponseDto } from '../../../common/dto/response/command-response.dto';
+import { ErrorResponseDto } from '../../../common/dto/response/error.response.dto';
+import { PaginatedResponseDto } from '../../../common/dto/response/paginated.response.dto';
+import { CompanyGuard } from '../../../common/guards/company.id';
 
 import { CreateCategoryCommand } from './commands/create-category.command';
 import { DeleteCategoryCommand } from './commands/delete-category.command';
