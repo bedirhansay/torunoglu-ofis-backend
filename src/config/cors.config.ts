@@ -11,23 +11,29 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
 
   return {
     origin: (origin, callback) => {
+      // Allow requests with no origin
       if (!origin) {
         return callback(null, true);
       }
 
+      // Always allow localhost origins (for development and testing from localhost)
       if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
         return callback(null, true);
       }
 
+      // Check if origin is in allowed list
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
+      // Production: allow all origins (for now - you can restrict later)
+      // This allows requests from any origin in production
       if (!isDevelopment) {
         return callback(null, true);
       }
 
-      callback(new Error('CORS policy violation: Origin not allowed'));
+      // Development: only allow localhost and allowed origins
+      callback(new Error(`CORS policy violation: Origin ${origin} not allowed`));
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id', 'x-correlation-id'],
