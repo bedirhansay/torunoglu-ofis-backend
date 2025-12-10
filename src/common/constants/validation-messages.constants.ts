@@ -1,0 +1,17 @@
+export const VALIDATION_MESSAGES = {
+  REQUIRED: (field: string) => `${field} boş olamaz`,
+  MIN_LENGTH: (field: string, min: number) => `${field} en az ${min} karakter olmalıdır`,
+  MAX_LENGTH: (field: string, max: number) => `${field} en fazla ${max} karakter olabilir`,
+  LENGTH: (field: string, min: number, max: number) => `${field} ${min}-${max} karakter arası olmalıdır`,
+  IS_STRING: (field: string) => `${field} metin olmalıdır`,
+  IS_NUMBER: (field: string) => `${field} sayı olmalıdır`,
+  IS_EMAIL: (field: string) => `${field} geçerli bir e-posta adresi olmalıdır`,
+  IS_DATE: (field: string) => `${field} geçerli bir tarih olmalıdır`,
+  IS_BOOLEAN: (field: string) => `${field} boolean değer olmalıdır`,
+  MIN: (field: string, min: number) => `${field} en az ${min} olmalıdır`,
+  MAX: (field: string, max: number) => `${field} en fazla ${max} olabilir`,
+  IS_POSITIVE: (field: string) => `${field} pozitif bir sayı olmalıdır`,
+  IS_MONGO_ID: (field: string) => `${field} geçerli bir MongoDB ObjectId olmalıdır`,
+  IS_ENUM: (field: string, values: string[]) => `${field} şu değerlerden biri olmalıdır: ${values.join(', ')}`,
+  MATCHES: (field: string, pattern: string) => `${field} geçerli formatta olmalıdır`,
+} as const;

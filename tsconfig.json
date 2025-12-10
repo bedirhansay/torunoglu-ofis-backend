@@ -16,6 +16,13 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "baseUrl": "./",
+    "paths": {
+      "@common/*": ["src/common/*"],
+      "@common/dto/*": ["src/common/dto/*"],
+      "@core/*": ["src/modules/core/*"],
+      "@accounting/*": ["src/modules/accounting/*"]
+    }
   }
 }

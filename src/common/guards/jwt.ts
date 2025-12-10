@@ -18,6 +18,9 @@ export class JwtAuthGuard implements CanActivate {
       { method: 'GET', path: '/api-json' },
       { method: 'GET', path: '/swagger' },
       { method: 'GET', path: '/' },
+      { method: 'GET', path: '/health' },
+      { method: 'GET', path: '/health/live' },
+      { method: 'GET', path: '/health/ready' },
     ];
 
     const isPublic = publicRoutes.some(

@@ -37,15 +37,17 @@ export class PaginatedDateSearchDTO extends PaginationDTO {
     description: 'Başlangıç tarihi (ISO formatında, opsiyonel)',
     example: '2025-01-01',
   })
+  @Type(() => String)
   @IsOptional()
-  @IsDateString()
+  @IsDateString({}, { message: 'Geçerli bir başlangıç tarihi formatı giriniz (ISO 8601)' })
   beginDate?: string;
 
   @ApiPropertyOptional({
     description: 'Bitiş tarihi (ISO formatında, opsiyonel)',
     example: '2025-01-31',
   })
+  @Type(() => String)
   @IsOptional()
-  @IsDateString()
+  @IsDateString({}, { message: 'Geçerli bir bitiş tarihi formatı giriniz (ISO 8601)' })
   endDate?: string;
 }

@@ -1,2 +1,0 @@
-export const PAGINATION_DEFAULT_PAGE = 1;
-export const PAGINATION_DEFAULT_PAGE_SIZE = 30;
