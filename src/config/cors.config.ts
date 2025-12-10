@@ -10,6 +10,5 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id', 'x-correlation-id'],
     exposedHeaders: ['Authorization', 'x-correlation-id'],
-    credentials: true,
   };
 }
