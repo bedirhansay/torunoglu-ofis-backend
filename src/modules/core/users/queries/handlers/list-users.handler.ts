@@ -1,4 +1,4 @@
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
+import { PaginatedResponseDto } from '../../../../../common/dto/response/paginated.response.dto';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

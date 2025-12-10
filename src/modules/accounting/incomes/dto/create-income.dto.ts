@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsBoolean, IsDateString, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
-import { VALIDATION_MESSAGES } from '@common/constants/validation-messages.constants';
+import { VALIDATION_MESSAGES } from '../../../../common/constants/validation-messages.constants';
 
 export class CreateIncomeDto {
   @ApiProperty({ example: '664cbea1a2170a5c9ef7b412', description: "Gelirin bağlı olduğu müşteri ID'si" })

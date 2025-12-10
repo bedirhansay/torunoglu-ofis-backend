@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
-import { GetCompanyQuery } from '../get-company.query';
+import { Model } from 'mongoose';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { Company, CompanyDocument } from '../../company.schema';
 import { CompanyDto } from '../../dto/company-dto';
-import { ensureValidObjectId } from '@common/helper/object.id';
-
+import { GetCompanyQuery } from '../get-company.query';
 @Injectable()
 @QueryHandler(GetCompanyQuery)
 export class GetCompanyHandler implements IQueryHandler<GetCompanyQuery> {
@@ -32,4 +31,3 @@ export class GetCompanyHandler implements IQueryHandler<GetCompanyQuery> {
     });
   }
 }
-

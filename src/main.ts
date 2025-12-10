@@ -21,7 +21,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(createValidationConfig(configService)));
 
-  app.useStaticAssets(join(__dirname, '..', appConfig.staticAssetsPath));
+  // Use workspace-absolute path so Vercel/serverless can resolve assets
+  app.useStaticAssets(join(process.cwd(), appConfig.staticAssetsPath));
 
   app.setGlobalPrefix(appConfig.globalPrefix, {
     exclude: appConfig.globalPrefixExcludes,

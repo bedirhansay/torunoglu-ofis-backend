@@ -1,7 +1,7 @@
 import { BadRequestException, CanActivate, ExecutionContext, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { CompanyDocument } from '@core/companies/company.schema';
+import { CompanyDocument } from '../../modules/core/companies/company.schema';
 
 @Injectable()
 export class CompanyGuard implements CanActivate {

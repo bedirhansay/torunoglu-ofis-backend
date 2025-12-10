@@ -1,6 +1,6 @@
-import { TransactionService } from '@common/services/transaction.service';
-import { hashPassword } from '@common/utils/password.util';
-import { User, UserDocument } from '@core/users/user.schema';
+import { TransactionService } from '../../../../../common/services/transaction.service';
+import { hashPassword } from '../../../../../common/utils/password.util';
+import { User, UserDocument } from '../../../users/user.schema';
 import { ConflictException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

@@ -3,11 +3,11 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules", "test", "dist", "**/*.spec.ts"],
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "@common/*": ["src/common/*"],
-      "@core/*": ["src/modules/core/*"],
-      "@accounting/*": ["src/modules/accounting/*"]
+      "@common/*": ["common/*"],
+      "@core/*": ["modules/core/*"],
+      "@accounting/*": ["modules/accounting/*"]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
+import { CommandResponseDto } from '../../../../../common';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

@@ -1,8 +1,8 @@
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { CommandResponseDto } from '../../../../../common';
 import { Category, CategoryDocument } from '../../categories.schema';
 import { CategoryType } from '../../dto/category.dto';
 import { CreateCategoryCommand } from '../create-category.command';

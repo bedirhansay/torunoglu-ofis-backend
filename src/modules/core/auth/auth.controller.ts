@@ -12,7 +12,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
-import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
+import { ErrorResponseDto } from '../../../common/dto/response/error.response.dto';
 import { LoginCommand } from './commands/login.command';
 import { RegisterCommand } from './commands/register.command';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
