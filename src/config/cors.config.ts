@@ -5,27 +5,24 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
   const allowedOrigins = configService.get<string[]>('cors.allowedOrigins') || [
     'http://localhost:3000',
     'http://localhost:5173',
+    'http://127.0.0.1:5173',
   ];
   const isDevelopment = configService.get<string>('nodeEnv') === 'development';
 
   return {
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) {
         return callback(null, true);
       }
 
-      // Check if origin is in allowed list
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      // Always allow localhost origins (for development and testing)
       if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
         return callback(null, true);
       }
 
-      // Production: allow all origins (you can restrict this if needed)
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
       if (!isDevelopment) {
         return callback(null, true);
       }
@@ -37,5 +34,7 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
     exposedHeaders: ['Authorization', 'x-correlation-id'],
     credentials: true,
     maxAge: 86400,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   };
 }
