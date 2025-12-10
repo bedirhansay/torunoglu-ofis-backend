@@ -6,7 +6,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import { appConfig } from './config/app.config';
-import { createCorsConfig } from './config/cors.config';
+import { corsConfig } from './config/cors.config';
 import { createHelmetConfig } from './config/helmet.config';
 import { createSwaggerConfig, swaggerDocumentOptions } from './config/swagger.config';
 import { createValidationConfig } from './config/validation.config';
@@ -21,7 +21,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(createValidationConfig(configService)));
 
-  app.enableCors(createCorsConfig());
+  app.enableCors(corsConfig);
 
   app.useStaticAssets(join(process.cwd(), appConfig.staticAssetsPath));
 
