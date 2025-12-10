@@ -29,10 +29,12 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
     //   callback(new Error('This origin is not allowed'));
     // },
     origin: ['*'],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id', 'x-correlation-id'],
     exposedHeaders: ['Authorization'],
     credentials: true,
-    maxAge: 86400,
+    maxAge: 864000,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   };
 }
