@@ -21,7 +21,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(createValidationConfig(configService)));
 
-  app.enableCors(createCorsConfig(configService));
+  app.enableCors(createCorsConfig());
 
   app.useStaticAssets(join(process.cwd(), appConfig.staticAssetsPath));
 
