@@ -26,7 +26,7 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
         return callback(null, true);
       }
 
-      callback(new Error('CORS policy violation: Origin not allowed'));
+      callback(new Error('This origin is not allowed'));
     },
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id'],
