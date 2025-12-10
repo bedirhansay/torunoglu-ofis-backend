@@ -1,5 +1,5 @@
 import { IQuery } from '@nestjs/cqrs';
-import { PaginatedDateSearchDTO } from '../../../../common/dto/request/pagination.request.dto';
+import { PaginatedDateSearchDTO } from '../../../../common/types/request/pagination.request.dto';
 
 export class ListIncomesByCustomerQuery implements IQuery {
   constructor(

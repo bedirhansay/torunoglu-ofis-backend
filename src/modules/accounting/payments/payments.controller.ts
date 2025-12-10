@@ -20,10 +20,10 @@ import {
 } from '../../../common/decorator/swagger';
 import { CompanyGuard } from '../../../common/guards/company.id';
 
-import { PaginatedDateSearchDTO } from '../../../common/dto/request/pagination.request.dto';
-import { ErrorResponseDto } from '../../../common/dto/response/error.response.dto';
-import { CommandResponseDto } from '../../../common/dto/response/command-response.dto';
-import { PaginatedResponseDto } from '../../../common/dto/response/paginated.response.dto';
+import { PaginatedDateSearchDTO } from '../../../common/types/request/pagination.request.dto';
+import { CommandResponseDto } from '../../../common/types/response/command-response.dto';
+import { ErrorResponseDto } from '../../../common/types/response/error.response.dto';
+import { PaginatedResponseDto } from '../../../common/types/response/paginated.response.dto';
 
 import { CreatePaymentCommand } from './commands/create-payment.command';
 import { DeletePaymentCommand } from './commands/delete-payment.command';

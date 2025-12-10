@@ -14,10 +14,10 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-  import { CurrentCompany } from '../../../common/decorator/company.id';
-import { DateRangeDTO } from '../../../common/dto/request';
-import { ErrorResponseDto } from '../../../common/dto/response/error.response.dto';
+import { CurrentCompany } from '../../../common/decorator/company.id';
 import { CompanyGuard } from '../../../common/guards/company.id';
+import { DateRangeDTO } from '../../../common/types/request';
+import { ErrorResponseDto } from '../../../common/types/response/error.response.dto';
 import { CustomerIncomeSummaryDto } from './dto/customer-report.dto';
 import { DashboardStatsDto, DetailedReportDto, MonthlyReportItemDto } from './dto/total-summary-dto';
 import { VehicleMonthlyFuelReportDto } from './dto/vehicle-monthly-fuel-report.dto';

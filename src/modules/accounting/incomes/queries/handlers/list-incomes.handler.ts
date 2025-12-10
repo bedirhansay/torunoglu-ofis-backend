@@ -1,11 +1,11 @@
-import { Customer, CustomerDocument } from '../../../customers/customer.schema';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
-import { PaginatedResponseDto } from '../../../../../common/dto/response/paginated.response.dto';
 import { FilterBuilder } from '../../../../../common/helper/filter.builder';
+import { PaginatedResponseDto } from '../../../../../common/types/response/paginated.response.dto';
+import { Customer, CustomerDocument } from '../../../customers/customer.schema';
 import { IncomeDto } from '../../dto/income.dto';
 import { Income, IncomeDocument } from '../../income.schema';
 import { ListIncomesQuery } from '../list-incomes.query';

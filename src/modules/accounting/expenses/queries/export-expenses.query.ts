@@ -1,5 +1,5 @@
 import { IQuery } from '@nestjs/cqrs';
-import { DateRangeDTO } from '../../../../common/dto/request';
+import { DateRangeDTO } from '../../../../common/types/request';
 
 export class ExportExpensesQuery implements IQuery {
   constructor(

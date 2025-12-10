@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { BaseDto } from '../../../../common/dto/base/base.dto';
+import { BaseDto } from '../../../../common/types/base/base.dto';
 
 export enum CategoryType {
   INCOME = 'income',

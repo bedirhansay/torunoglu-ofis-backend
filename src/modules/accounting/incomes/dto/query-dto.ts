@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsOptional } from 'class-validator';
 
-import { PaginatedDateSearchDTO } from '../../../../common/dto/request/pagination.request.dto';
+import { PaginatedDateSearchDTO } from '../../../../common/types/request/pagination.request.dto';
 
 export class IncomeQueryDto extends PaginatedDateSearchDTO {
   @ApiPropertyOptional({

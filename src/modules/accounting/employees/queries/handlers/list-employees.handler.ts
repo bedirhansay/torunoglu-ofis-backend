@@ -1,11 +1,11 @@
-import { DEFAULT_API_PARAMS } from '../../../../../common/constants';
-import { PaginatedResponseDto } from '../../../../../common/dto/response/paginated.response.dto';
-import { FilterBuilder } from '../../../../../common/helper/filter.builder';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
+import { DEFAULT_API_PARAMS } from '../../../../../common/constants';
+import { FilterBuilder } from '../../../../../common/helper/filter.builder';
+import { PaginatedResponseDto } from '../../../../../common/types/response/paginated.response.dto';
 import { EmployeeDto } from '../../dto/employee.dto';
 import { Employee, EmployeeDocument } from '../../employee.schema';
 import { ListEmployeesQuery } from '../list-employees.query';
