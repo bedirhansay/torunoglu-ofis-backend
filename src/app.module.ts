@@ -89,7 +89,6 @@ import { validateConfig } from './validations/config.validation';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [`.env.${process.env.NODE_ENV || 'development'}`, '.env'],
       load: [configuration],
       validate: (config: Record<string, unknown>) => {
         if (process.env.NODE_ENV === 'production' || process.env.VALIDATE_CONFIG === 'true') {
