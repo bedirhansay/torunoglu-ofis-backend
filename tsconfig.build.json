@@ -2,12 +2,5 @@
   "extends": "./tsconfig.json",
   "include": ["src/**/*"],
   "exclude": ["node_modules", "test", "dist", "**/*.spec.ts"],
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "@common/*": ["common/*"],
-      "@core/*": ["modules/core/*"],
-      "@accounting/*": ["modules/accounting/*"]
-    }
-  }
+  "compilerOptions": {}
 }
