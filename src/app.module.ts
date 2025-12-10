@@ -4,7 +4,6 @@ import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { JwtAuthGuard } from './common/guards/jwt';
 import { AuditInterceptor } from './common/interceptor/audit.interceptor';
 import { CorrelationInterceptor } from './common/interceptor/correlation.interceptor';
@@ -147,7 +146,6 @@ import { validateConfig } from './validations/config.validation';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     MongooseLoggerUtil,
     TransactionService,
     DatabaseMonitoringService,
