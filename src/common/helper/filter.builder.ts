@@ -39,7 +39,6 @@ export class FilterBuilder {
     endDate?: string | Date,
     dateField: string = 'operationDate'
   ): void {
-    console.log('---addDateRangeFilter---beginDate, endDate', beginDate, endDate);
     if (!beginDate && !endDate) return;
 
     filter[dateField] = {};
@@ -54,7 +53,6 @@ export class FilterBuilder {
   static buildIncomeFilter(params: IncomeFilterParams): Record<string, any> {
     const filter = this.buildBaseFilter(params);
 
-    // Add date range filter using centralized method
     FilterBuilder.addDateRangeFilter(filter, params.beginDate, params.endDate);
 
     if (params.customerId) {

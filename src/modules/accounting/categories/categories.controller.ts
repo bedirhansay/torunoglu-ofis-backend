@@ -43,8 +43,8 @@ import { CreateCategoryCommand } from './commands/create-category.command';
 import { DeleteCategoryCommand } from './commands/delete-category.command';
 import { UpdateCategoryCommand } from './commands/update-category.command';
 import { CategoryDto } from './dto/category.dto';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateCategoryCommandDto } from './dto/create-category.dto';
+import { UpdateCategoryCommandDto } from './dto/update-category.dto';
 import { GetCategoryQuery } from './queries/get-category.query';
 import { ListCategoriesQuery } from './queries/list-categories.query';
 
@@ -52,8 +52,8 @@ import { ListCategoriesQuery } from './queries/list-categories.query';
 @ApiExtraModels(
   CommandResponseDto,
   CategoryDto,
-  CreateCategoryDto,
-  UpdateCategoryDto,
+  CreateCategoryCommandDto,
+  UpdateCategoryCommandDto,
   PaginatedSearchDTO,
   BaseResponseDto,
   PaginatedResponseDto
@@ -96,7 +96,7 @@ export class CategoriesController {
     operationId: 'createCategory',
   })
   @ApiBody({
-    type: CreateCategoryDto,
+    type: CreateCategoryCommandDto,
     description: 'Oluşturulacak kategori bilgileri',
     examples: {
       example1: {
@@ -120,7 +120,7 @@ export class CategoriesController {
     type: ErrorResponseDto,
   })
   async create(
-    @Body() createCategoryDto: CreateCategoryDto,
+    @Body() createCategoryDto: CreateCategoryCommandDto,
     @CurrentCompany() companyId: string
   ): Promise<CommandResponseDto> {
     const command = new CreateCategoryCommand(createCategoryDto, companyId);
@@ -166,17 +166,19 @@ export class CategoriesController {
     example: '507f1f77bcf86cd799439011',
   })
   @ApiBody({
-    type: UpdateCategoryDto,
-    description: 'Güncellenecek kategori bilgileri (kısmi güncelleme)',
+    type: UpdateCategoryCommandDto,
+    description:
+      'Güncellenecek kategori bilgileri (kısmi güncelleme). ID isteğe bağlıdır, path parameter ile aynı olmalıdır.',
     examples: {
       example1: {
         summary: 'Kategori adı güncelle',
         value: {
+          id: '507f1f77bcf86cd799439011',
           name: 'Yeni Ulaşım',
         },
       },
       example2: {
-        summary: 'Aktiflik durumu güncelle',
+        summary: 'Aktiflik durumu güncelle (ID olmadan)',
         value: {
           isActive: false,
         },
@@ -198,17 +200,10 @@ export class CategoriesController {
   })
   async update(
     @Param('id') id: string,
-    @Body() updateCategoryDto: UpdateCategoryDto,
+    @Body() updateCategoryDto: UpdateCategoryCommandDto,
     @CurrentCompany() companyId: string
   ): Promise<CommandResponseDto> {
-    const command = new UpdateCategoryCommand(
-      id,
-      companyId,
-      updateCategoryDto.name,
-      updateCategoryDto.description,
-      updateCategoryDto.type,
-      updateCategoryDto.isActive
-    );
+    const command = new UpdateCategoryCommand(id, companyId, updateCategoryDto);
     return this.commandBus.execute(command);
   }
 

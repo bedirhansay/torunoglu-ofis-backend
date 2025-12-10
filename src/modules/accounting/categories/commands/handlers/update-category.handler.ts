@@ -1,6 +1,6 @@
 import { CommandResponseDto } from '@common/dto/response/command-response.dto';
 import { ensureValidObjectId } from '@common/helper/object.id';
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -19,14 +19,20 @@ export class UpdateCategoryHandler implements ICommandHandler<UpdateCategoryComm
   constructor(@InjectModel(Category.name) private readonly categoryModel: Model<CategoryDocument>) {}
 
   async execute(command: UpdateCategoryCommand): Promise<CommandResponseDto> {
-    ensureValidObjectId(command.id, UpdateCategoryHandler.ERROR_MESSAGES.INVALID_CATEGORY_ID);
+    const categoryId = command.updateCategoryDto.id || command.id;
 
-    if (command.name) {
+    if (command.updateCategoryDto.id && command.updateCategoryDto.id !== command.id) {
+      throw new BadRequestException("Route ve body'deki ID değerleri eşleşmiyor");
+    }
+
+    ensureValidObjectId(categoryId, UpdateCategoryHandler.ERROR_MESSAGES.INVALID_CATEGORY_ID);
+
+    if (command.updateCategoryDto.name) {
       const exists = await this.categoryModel
         .findOne({
-          name: command.name,
+          name: command.updateCategoryDto.name,
           companyId: new Types.ObjectId(command.companyId),
-          _id: { $ne: new Types.ObjectId(command.id) },
+          _id: { $ne: new Types.ObjectId(categoryId) },
         })
         .lean()
         .exec();
@@ -37,14 +43,15 @@ export class UpdateCategoryHandler implements ICommandHandler<UpdateCategoryComm
     }
 
     const updateData: any = {};
-    if (command.name) updateData.name = command.name;
-    if (command.description !== undefined) updateData.description = command.description;
-    if (command.type) updateData.type = command.type;
-    if (command.isActive !== undefined) updateData.isActive = command.isActive;
+    if (command.updateCategoryDto.name) updateData.name = command.updateCategoryDto.name;
+    if (command.updateCategoryDto.description !== undefined)
+      updateData.description = command.updateCategoryDto.description;
+    if (command.updateCategoryDto.type) updateData.type = command.updateCategoryDto.type;
+    if (command.updateCategoryDto.isActive !== undefined) updateData.isActive = command.updateCategoryDto.isActive;
 
     const updated = await this.categoryModel
       .findOneAndUpdate(
-        { _id: new Types.ObjectId(command.id), companyId: new Types.ObjectId(command.companyId) },
+        { _id: new Types.ObjectId(categoryId), companyId: new Types.ObjectId(command.companyId) },
         updateData,
         { new: true }
       )

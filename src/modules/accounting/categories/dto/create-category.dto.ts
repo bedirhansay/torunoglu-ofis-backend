@@ -1,9 +1,9 @@
+import { VALIDATION_MESSAGES } from '@common/constants/validation-messages.constants';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
-import { VALIDATION_MESSAGES } from '@common/constants/validation-messages.constants';
 import { CategoryType } from './category.dto';
 
-export class CreateCategoryDto {
+export class CreateCategoryCommandDto {
   @ApiProperty({
     description: 'Kategori adı',
     example: 'Elektrik Gideri',
