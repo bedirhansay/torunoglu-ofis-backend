@@ -1,5 +1,5 @@
-import { TransactionService } from '@common/services/transaction.service';
-import { User, UserSchema } from '@core/users/user.schema';
+import { TransactionService } from '../../../common/services/transaction.service';
+import { User, UserSchema } from '../../../modules/core/users/user.schema';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';

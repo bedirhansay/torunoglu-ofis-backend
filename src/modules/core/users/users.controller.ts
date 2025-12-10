@@ -12,12 +12,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { ApiBaseResponse, ApiCommandResponse, ApiPaginatedResponse } from '@common/decorator/swagger';
-import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
-import { BaseResponseDto } from '@common/dto/response/base.response.dto';
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
+import { ApiBaseResponse, ApiCommandResponse, ApiPaginatedResponse } from '../../../common/decorator/swagger';
+import { PaginatedSearchDTO } from '../../../common/types/request/search.request.dto';
+import { BaseResponseDto } from '../../../common/types/response/base.response.dto';
+import { CommandResponseDto } from '../../../common/types/response/command-response.dto';
+import { ErrorResponseDto } from '../../../common/types/response/error.response.dto';
+import { PaginatedResponseDto } from '../../../common/types/response/paginated.response.dto';
 import { CreateUserCommand } from './commands/create-user.command';
 import { DeleteUserCommand } from './commands/delete-user.command';
 import { UpdateUserCommand } from './commands/update-user.command';

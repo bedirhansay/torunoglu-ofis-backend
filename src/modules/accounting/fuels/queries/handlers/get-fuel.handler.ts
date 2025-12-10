@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
-import { ensureValidObjectId } from '@common/helper/object.id';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { FuelDto } from '../../dto/fuel.dto';
 import { Fuel, FuelDocument } from '../../fuel.schema';
 import { GetFuelQuery } from '../get-fuel.query';
@@ -35,4 +35,3 @@ export class GetFuelHandler implements IQueryHandler<GetFuelQuery> {
     });
   }
 }
-

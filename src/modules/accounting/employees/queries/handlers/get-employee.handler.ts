@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model, Types } from 'mongoose';
-import { ensureValidObjectId } from '@common/helper/object.id';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { EmployeeDto } from '../../dto/employee.dto';
 import { Employee, EmployeeDocument } from '../../employee.schema';
 import { GetEmployeeQuery } from '../get-employee.query';
@@ -36,4 +36,3 @@ export class GetEmployeeHandler implements IQueryHandler<GetEmployeeQuery> {
     });
   }
 }
-

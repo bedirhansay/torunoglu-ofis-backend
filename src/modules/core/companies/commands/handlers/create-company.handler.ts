@@ -1,8 +1,8 @@
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CommandResponseDto } from '../../../../../common';
 import { Company, CompanyDocument } from '../../company.schema';
 import { CreateCompanyCommand } from '../create-company.command';
 

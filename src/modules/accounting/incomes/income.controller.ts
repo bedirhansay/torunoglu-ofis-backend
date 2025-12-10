@@ -14,23 +14,23 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { CurrentCompany } from '@common/decorator/company.id';
+import { CurrentCompany } from '../../../common/decorator/company.id';
 import {
   ApiBaseResponse,
   ApiCommandResponse,
   ApiIncomeQueryDto,
   ApiPaginatedResponse,
   ApiSearchDatePaginatedQuery,
-} from '@common/decorator/swagger';
-import { CompanyGuard } from '@common/guards/company.id';
+} from '../../../common/decorator/swagger';
+import { CompanyGuard } from '../../../common/guards/company.id';
 
-import { PaginatedDateSearchDTO } from '@common/dto/request/pagination.request.dto';
-import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
-import { BaseResponseDto } from '@common/dto/response/base.response.dto';
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
+import { PaginatedDateSearchDTO } from '../../../common/types/request/pagination.request.dto';
+import { BaseResponseDto } from '../../../common/types/response/base.response.dto';
+import { CommandResponseDto } from '../../../common/types/response/command-response.dto';
+import { ErrorResponseDto } from '../../../common/types/response/error.response.dto';
+import { PaginatedResponseDto } from '../../../common/types/response/paginated.response.dto';
 
-import { DateRangeDto } from '@common/dto/request';
+import { DateRangeDto } from '../../../common/types/request';
 import { CreateIncomeCommand } from './commands/create-income.command';
 import { DeleteIncomeCommand } from './commands/delete-income.command';
 import { UpdateIncomeCommand } from './commands/update-income.command';

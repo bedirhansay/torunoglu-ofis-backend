@@ -1,6 +1,6 @@
-import { Employee, EmployeeDocument } from '@accounting/employees/employee.schema';
-import { Vehicle, VehicleDocument } from '@accounting/vehicles/vehicle.schema';
-import { ensureValidObjectId } from '@common/helper/object.id';
+import { Employee, EmployeeDocument } from '../../../../accounting/employees/employee.schema';
+import { Vehicle, VehicleDocument } from '../../../../accounting/vehicles/vehicle.schema';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

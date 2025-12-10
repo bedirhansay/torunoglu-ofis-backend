@@ -1,8 +1,8 @@
-import { ErrorLoggerService } from '@core/logger/logger.service';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ErrorLoggerService } from '../../modules/core/logger/logger.service';
 import { maskSensitiveData } from '../utils/log-utils';
 
 @Injectable()

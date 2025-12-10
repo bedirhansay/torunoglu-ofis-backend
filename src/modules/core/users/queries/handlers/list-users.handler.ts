@@ -1,9 +1,9 @@
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
+import { PaginatedResponseDto } from '../../../../../common/types/response/paginated.response.dto';
 import { UserDto } from '../../dto/user.dto';
 import { User, UserDocument } from '../../user.schema';
 import { ListUsersQuery } from '../list-users.query';

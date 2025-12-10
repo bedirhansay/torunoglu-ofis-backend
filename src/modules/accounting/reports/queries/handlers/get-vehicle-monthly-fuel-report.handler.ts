@@ -1,4 +1,4 @@
-import { Fuel } from '@accounting/fuels/fuel.schema';
+import { Fuel } from '../../../../accounting/fuels/fuel.schema';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';

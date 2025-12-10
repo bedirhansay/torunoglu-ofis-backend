@@ -1,4 +1,4 @@
-import { Company, CompanySchema } from '@core/companies/company.schema';
+import { Company, CompanySchema } from '../../core/companies/company.schema';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';

@@ -1,4 +1,4 @@
-import { ErrorLoggerService } from '@core/logger/logger.service';
+import { ErrorLoggerService } from '../../modules/core/logger/logger.service';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';

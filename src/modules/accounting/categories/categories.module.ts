@@ -8,7 +8,7 @@ import { UpdateCategoryHandler } from './commands/handlers/update-category.handl
 import { DeleteCategoryHandler } from './commands/handlers/delete-category.handler';
 import { GetCategoryHandler } from './queries/handlers/get-category.handler';
 import { ListCategoriesHandler } from './queries/handlers/list-categories.handler';
-import { CompaniesModule } from '@core/companies/companies.module';
+import { CompaniesModule } from '../../../modules/core/companies/companies.module';
 
 const CommandHandlers = [CreateCategoryHandler, UpdateCategoryHandler, DeleteCategoryHandler];
 const QueryHandlers = [GetCategoryHandler, ListCategoriesHandler];

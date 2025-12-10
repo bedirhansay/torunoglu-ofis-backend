@@ -1,5 +1,5 @@
-import { PaginatedDateSearchDTO } from '@common/dto/request/pagination.request.dto';
 import { IQuery } from '@nestjs/cqrs';
+import { PaginatedDateSearchDTO } from '../../../../common/types/request/pagination.request.dto';
 
 export class ListExpensesByVehicleQuery implements IQuery {
   constructor(

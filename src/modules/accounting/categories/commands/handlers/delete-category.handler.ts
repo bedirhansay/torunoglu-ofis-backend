@@ -1,9 +1,9 @@
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { ensureValidObjectId } from '@common/helper/object.id';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { CommandResponseDto } from '../../../../../common';
+import { ensureValidObjectId } from '../../../../../common/helper/object.id';
 import { Category, CategoryDocument } from '../../categories.schema';
 import { DeleteCategoryCommand } from '../delete-category.command';
 

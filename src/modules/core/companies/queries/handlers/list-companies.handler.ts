@@ -1,10 +1,10 @@
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
-import { FilterBuilder } from '@common/helper/filter.builder';
 import { Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
+import { FilterBuilder } from '../../../../../common/helper/filter.builder';
+import { PaginatedResponseDto } from '../../../../../common/types/response/paginated.response.dto';
 import { Company, CompanyDocument } from '../../company.schema';
 import { CompanyDto } from '../../dto/company-dto';
 import { ListCompaniesQuery } from '../list-companies.query';

@@ -1,6 +1,6 @@
-import { VALIDATION_MESSAGES } from '@common/constants/validation-messages.constants';
 import { ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
+import { VALIDATION_MESSAGES } from '../../../../common/constants/validation-messages.constants';
 import { CreateCategoryCommandDto } from './create-category.dto';
 
 export class UpdateCategoryCommandDto extends PartialType(CreateCategoryCommandDto) {

@@ -1,7 +1,7 @@
-import { EmployeeDto } from '@accounting/employees/dto/employee.dto';
-import { BaseDto } from '@common/dto/base/base.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, plainToInstance, Transform } from 'class-transformer';
+import { BaseDto } from '../../../../common/types/base/base.dto';
+import { EmployeeDto } from '../../../accounting/employees/dto/employee.dto';
 
 export class VehicleDto extends BaseDto {
   @ApiProperty({ example: 'TR34ABC123', description: 'Plaka numarası' })

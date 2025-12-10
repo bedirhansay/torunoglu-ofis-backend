@@ -11,16 +11,15 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
-import { ApiPaginatedResponse, ApiSearchPaginatedQuery } from '@common/decorator/swagger';
-import { PaginatedSearchDTO } from '@common/dto/request/search.request.dto';
-import { ErrorResponseDto } from '@common/dto/response/error.response.dto';
-import { BaseResponseDto } from '@common/dto/response/base.response.dto';
-import { CommandResponseDto } from '@common/dto/response/command-response.dto';
-import { PaginatedResponseDto } from '@common/dto/response/paginated.response.dto';
+import { ApiPaginatedResponse, ApiSearchPaginatedQuery } from '../../../common/decorator/swagger';
+import { PaginatedSearchDTO } from '../../../common/types/request/search.request.dto';
+import { BaseResponseDto } from '../../../common/types/response/base.response.dto';
+import { CommandResponseDto } from '../../../common/types/response/command-response.dto';
+import { ErrorResponseDto } from '../../../common/types/response/error.response.dto';
+import { PaginatedResponseDto } from '../../../common/types/response/paginated.response.dto';
 import { CreateCompanyCommand } from './commands/create-company.command';
 import { DeleteCompanyCommand } from './commands/delete-company.command';
 import { UpdateCompanyCommand } from './commands/update-company.command';

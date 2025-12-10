@@ -14,7 +14,7 @@ export class AppController {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Nuvia Backend API</title>
+          <title>Torunoğlu Backend API</title>
           <style>
             * {
               margin: 0;

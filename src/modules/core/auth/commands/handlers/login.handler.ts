@@ -1,11 +1,11 @@
-import { comparePassword } from '@common/utils/password.util';
-import { User, UserDocument } from '@core/users/user.schema';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
+import { comparePassword } from '../../../../../common/utils/password.util';
+import { User, UserDocument } from '../../../../../modules/core/users/user.schema';
 import { LoginResponseDto, UserResponseDto } from '../../dto/login.dto';
 import { LoginCommand } from '../login.command';
 

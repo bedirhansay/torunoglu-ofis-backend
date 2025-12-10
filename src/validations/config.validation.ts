@@ -67,15 +67,9 @@ class EnvironmentVariables {
   @IsOptional()
   JWT_EXPIRES_IN?: string;
 
-  // JWT_REFRESH_EXPIRES_IN: Not implemented yet - refresh token mechanism needs to be added
-
   @IsString()
   @IsOptional()
   ALLOWED_ORIGINS?: string;
-
-  @IsEnum(LogLevel)
-  @IsOptional()
-  LOG_LEVEL?: LogLevel;
 }
 
 export function validateConfig(config: Record<string, unknown>) {
@@ -84,7 +78,7 @@ export function validateConfig(config: Record<string, unknown>) {
   });
 
   const errors = validateSync(validatedConfig, {
-    skipMissingProperties: false,
+    skipMissingProperties: true,
   });
 
   if (errors.length > 0) {

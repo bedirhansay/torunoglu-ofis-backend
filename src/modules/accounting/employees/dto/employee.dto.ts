@@ -1,7 +1,7 @@
-import { BaseDto } from '@common/dto/base/base.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import { IsOptional } from 'class-validator';
+import { BaseDto } from '../../../../common/types/base/base.dto';
 
 @Exclude()
 export class EmployeeDto extends BaseDto {

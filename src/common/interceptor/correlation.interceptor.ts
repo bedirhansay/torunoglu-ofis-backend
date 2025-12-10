@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { Observable } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CorrelationInterceptor implements NestInterceptor {
@@ -9,7 +9,7 @@ export class CorrelationInterceptor implements NestInterceptor {
     const response = context.switchToHttp().getResponse();
 
     // Get correlation ID from header or generate new one
-    const correlationId = request.headers['x-correlation-id'] || uuidv4();
+    const correlationId = request.headers['x-correlation-id'] || randomUUID();
 
     // Attach correlation ID to request and response
     request.correlationId = correlationId;

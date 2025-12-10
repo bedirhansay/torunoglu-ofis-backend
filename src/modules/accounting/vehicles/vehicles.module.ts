@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
-import { Company, CompanySchema } from '@core/companies/company.schema';
-import { VehiclesController } from './vehicles.controller';
-import { Vehicle, VehicleSchema } from './vehicle.schema';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { Company, CompanySchema } from '../../core/companies/company.schema';
 import { CreateVehicleHandler } from './commands/handlers/create-vehicle.handler';
-import { UpdateVehicleHandler } from './commands/handlers/update-vehicle.handler';
 import { DeleteVehicleHandler } from './commands/handlers/delete-vehicle.handler';
+import { UpdateVehicleHandler } from './commands/handlers/update-vehicle.handler';
 import { GetVehicleHandler } from './queries/handlers/get-vehicle.handler';
 import { ListVehiclesHandler } from './queries/handlers/list-vehicles.handler';
+import { Vehicle, VehicleSchema } from './vehicle.schema';
+import { VehiclesController } from './vehicles.controller';
 
 @Module({
   imports: [
@@ -19,12 +20,6 @@ import { ListVehiclesHandler } from './queries/handlers/list-vehicles.handler';
     ]),
   ],
   controllers: [VehiclesController],
-  providers: [
-    CreateVehicleHandler,
-    UpdateVehicleHandler,
-    DeleteVehicleHandler,
-    GetVehicleHandler,
-    ListVehiclesHandler,
-  ],
+  providers: [CreateVehicleHandler, UpdateVehicleHandler, DeleteVehicleHandler, GetVehicleHandler, ListVehiclesHandler],
 })
 export class VehiclesModule {}

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Response } from 'express';
 import { Model, Types } from 'mongoose';
-import { ExcelColumnConfig, ExcelHelper } from '@common/helper/excel.helper';
+import { ExcelColumnConfig, ExcelHelper } from '../../../../../common/helper/excel.helper';
 import { Income, IncomeDocument } from '../../income.schema';
 import { ExportAllIncomesQuery } from '../export-all-incomes.query';
 
@@ -72,4 +72,3 @@ export class ExportAllIncomesHandler {
     await ExcelHelper.sendAsResponse(workbook, res, 'all-incomes.xlsx');
   }
 }
-
