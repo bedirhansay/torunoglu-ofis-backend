@@ -10,29 +10,28 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
 
   return {
     // origin: (origin, callback) => {
-    //   if (!origin || allowedOrigins.includes(origin)) {
+    //   // Allow requests with no origin (like mobile apps or curl requests)
+    //   if (!origin) {
     //     return callback(null, true);
     //   }
 
-    //   if (!origin && isDevelopment) {
+    //   // Check if origin is in allowed list
+    //   if (allowedOrigins.includes(origin)) {
     //     return callback(null, true);
     //   }
 
-    //   if (
-    //     isDevelopment &&
-    //     origin &&
-    //     (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))
-    //   ) {
+    //   // In development, allow localhost origins
+    //   if (isDevelopment && (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))) {
     //     return callback(null, true);
     //   }
 
-    //   callback(new Error('This origin is not allowed'));
+    //   callback(new Error('CORS policy violation: Origin not allowed'));
     // },
     origin: ['*'],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id'],
-    exposedHeaders: ['Authorization'],
-    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id', 'x-correlation-id'],
+    exposedHeaders: ['Authorization', 'x-correlation-id'],
+    // credentials: true,
     maxAge: 86400,
   };
 }
