@@ -5,7 +5,7 @@ export const corsConfig = {
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS', 'PUT'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id', 'x-correlation-id'],
   exposedHeaders: ['Authorization', 'x-correlation-id'],
-  credentials: true,
+  credentials: false,
   maxAge: 864000,
   preflightContinue: false,
   optionsSuccessStatus: 204,

@@ -1,8 +1,7 @@
-import { ErrorLoggerService } from '../../modules/core/logger/logger.service';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { PinoLogger } from 'nestjs-pino';
+import { ErrorLoggerService } from '../../modules/core/logger/logger.service';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -10,10 +9,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
   constructor(
     private readonly logger: PinoLogger,
-    private readonly errorLogger: ErrorLoggerService,
-    private readonly configService: ConfigService
+    private readonly errorLogger: ErrorLoggerService
   ) {
-    this.isProduction = this.configService.get<string>('nodeEnv') === 'production';
+    this.isProduction = process.env.NODE_ENV === 'production';
   }
 
   async catch(exception: unknown, host: ArgumentsHost) {

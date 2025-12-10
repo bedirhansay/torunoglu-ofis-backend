@@ -1,7 +1,6 @@
-import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 
-export function createSwaggerConfig(configService: ConfigService) {
+export function createSwaggerConfig() {
   return new DocumentBuilder()
     .setTitle('API Dokümantasyonu')
     .setDescription('Muhasebe API dokümantasyonu')
@@ -24,11 +23,7 @@ export function createSwaggerConfig(configService: ConfigService) {
       },
       'x-company-id'
     )
-    .addServer(
-      configService.get<string>('app.baseUrl') || process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : 'http://localhost:3000'
-    )
+    .addServer(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
     .build();
 }
 

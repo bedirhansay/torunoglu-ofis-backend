@@ -1,5 +1,4 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import mongoose from 'mongoose';
 
 /**
@@ -11,12 +10,12 @@ export class MongooseLoggerUtil implements OnModuleInit {
   private readonly logger = new Logger('MongoDB');
   private readonly isDevelopment: boolean;
 
-  constructor(private readonly configService: ConfigService) {
-    this.isDevelopment = this.configService.get<string>('nodeEnv') === 'development';
+  constructor() {
+    this.isDevelopment = process.env.NODE_ENV === 'development';
   }
 
   onModuleInit() {
-    if (this.isDevelopment && this.configService.get<boolean>('mongodb.debug')) {
+    if (this.isDevelopment && process.env.NODE_ENV === 'development') {
       this.enableQueryLogging();
     }
   }

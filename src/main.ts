@@ -1,5 +1,4 @@
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
@@ -15,11 +14,10 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
   });
-  const configService = app.get(ConfigService);
 
   app.use(createHelmetConfig());
 
-  app.useGlobalPipes(new ValidationPipe(createValidationConfig(configService)));
+  app.useGlobalPipes(new ValidationPipe(createValidationConfig()));
 
   app.enableCors(corsConfig);
 
@@ -29,7 +27,7 @@ async function bootstrap() {
     exclude: appConfig.globalPrefixExcludes,
   });
 
-  const swaggerConfig = createSwaggerConfig(configService);
+  const swaggerConfig = createSwaggerConfig();
   const document = SwaggerModule.createDocument(app, swaggerConfig, swaggerDocumentOptions);
   SwaggerModule.setup('swagger', app, document);
 
@@ -40,7 +38,7 @@ async function bootstrap() {
       res.json(document);
     });
 
-  const port = configService.get<number>('app.port') || appConfig.port;
+  const port = parseInt(process.env.PORT || '3000', 10);
   await app.listen(port);
 }
 

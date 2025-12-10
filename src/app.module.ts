@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
@@ -12,7 +12,6 @@ import { DatabaseMonitoringService } from './common/services/database-monitoring
 import { TransactionService } from './common/services/transaction.service';
 import { maskSensitiveData } from './common/utils/log-utils';
 import { MongooseLoggerUtil } from './common/utils/mongoose-logger.util';
-import configuration from './config/configuration';
 import { CategoriesModule } from './modules/accounting/categories/categories.module';
 import { CustomersModule } from './modules/accounting/customers/customers.module';
 import { EmployeesModule } from './modules/accounting/employees/employees.module';
@@ -35,11 +34,9 @@ import { validateConfig } from './validations/config.validation';
 @Module({
   imports: [
     PinoLoggerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const isDevelopment = configService.get<string>('nodeEnv') === 'development';
-        const logLevel = configService.get<string>('logging.level') || 'info';
+      useFactory: () => {
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        const logLevel = process.env.LOG_LEVEL || 'info';
 
         return {
           pinoHttp: {
@@ -89,7 +86,6 @@ import { validateConfig } from './validations/config.validation';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [configuration],
       validate: (config: Record<string, unknown>) => {
         if (process.env.NODE_ENV === 'production' || process.env.VALIDATE_CONFIG === 'true') {
           try {
@@ -107,16 +103,14 @@ import { validateConfig } from './validations/config.validation';
       },
     }),
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('mongodb.uri'),
-        dbName: config.get<string>('mongodb.dbName'),
-        maxPoolSize: config.get<number>('mongodb.maxPoolSize'),
-        minPoolSize: config.get<number>('mongodb.minPoolSize'),
-        maxIdleTimeMS: config.get<number>('mongodb.maxIdleTimeMS'),
-        serverSelectionTimeoutMS: config.get<number>('mongodb.serverSelectionTimeoutMS'),
-        socketTimeoutMS: config.get<number>('mongodb.socketTimeoutMS'),
+      useFactory: () => ({
+        uri: process.env.MONGO_URI,
+        dbName: process.env.MONGO_DB,
+        maxPoolSize: parseInt(process.env.MONGODB_MAX_POOL_SIZE || '10', 10),
+        minPoolSize: parseInt(process.env.MONGODB_MIN_POOL_SIZE || '2', 10),
+        maxIdleTimeMS: parseInt(process.env.MONGODB_MAX_IDLE_TIME_MS || '30000', 10),
+        serverSelectionTimeoutMS: parseInt(process.env.MONGODB_SERVER_SELECTION_TIMEOUT_MS || '5000', 10),
+        socketTimeoutMS: parseInt(process.env.MONGODB_SOCKET_TIMEOUT_MS || '45000', 10),
         // Retry mekanizması
         retryWrites: true,
         retryReads: true,
