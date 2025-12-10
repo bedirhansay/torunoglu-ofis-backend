@@ -20,7 +20,6 @@
     "baseUrl": "./",
     "paths": {
       "@common/*": ["src/common/*"],
-      "@common/dto/*": ["src/common/dto/*"],
       "@core/*": ["src/modules/core/*"],
       "@accounting/*": ["src/modules/accounting/*"]
     }
