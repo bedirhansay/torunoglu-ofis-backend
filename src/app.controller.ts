@@ -197,7 +197,7 @@ export class AppController {
         <body>
           <div class="container">
             <div class="logo">🚀</div>
-            <h1>Nuvia Backend API</h1>
+            <h1>Torunoğlu Backend API</h1>
             <p class="subtitle">Modern, Scalable & Secure Backend Service</p>
             
             <div class="status-badge">
@@ -242,11 +242,11 @@ export class AppController {
             </div>
             
             <div class="footer">
-              <p>Built with ❤️ using NestJS, MongoDB & TypeScript</p>
+              <p>Developed by Bedirhan Say</p>
             </div>
 
            <div>
-           Nuvia Backend API — © 2025 Nuvia Software
+           Torunoğlu Backend API — © 2025 Torunoğlu Software
            </div>
 
           
