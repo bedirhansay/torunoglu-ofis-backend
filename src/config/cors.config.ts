@@ -9,29 +9,29 @@ export function createCorsConfig(configService: ConfigService): CorsOptions {
   const isDevelopment = configService.get<string>('nodeEnv') === 'development';
 
   return {
-    // origin: (origin, callback) => {
-    //   // Allow requests with no origin (like mobile apps or curl requests)
-    //   if (!origin) {
-    //     return callback(null, true);
-    //   }
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true);
+      }
 
-    //   // Check if origin is in allowed list
-    //   if (allowedOrigins.includes(origin)) {
-    //     return callback(null, true);
-    //   }
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-    //   // In development, allow localhost origins
-    //   if (isDevelopment && (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))) {
-    //     return callback(null, true);
-    //   }
+      if (isDevelopment && (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:'))) {
+        return callback(null, true);
+      }
 
-    //   callback(new Error('CORS policy violation: Origin not allowed'));
-    // },
-    origin: ['*'],
+      if (!isDevelopment) {
+        return callback(null, true);
+      }
+
+      callback(new Error('CORS policy violation: Origin not allowed'));
+    },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-company-id', 'x-correlation-id'],
     exposedHeaders: ['Authorization', 'x-correlation-id'],
-    // credentials: true,
+    credentials: true,
     maxAge: 86400,
   };
 }
